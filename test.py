@@ -1,44 +1,68 @@
+import pyupbit
 from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
+import pandas as pd
 
-# kst = "2025-02-28 23:58:00"
+date1_str = "2024-03-02 00:00:00"
+date2_str = "2025-03-02 00:00:00"
 
-# kst = datetime.strptime(kst, "%Y-%m-%d %H:%M:%S")
-# kst1 = kst - timedelta(minutes=525600)
+def set_datetime(date: str | pd.Timestamp | datetime | None) -> datetime:
+    if date is None:
+        date = datetime.now()
+        date_format = "%Y-%m-%d %H:%M:%S"
+        date = datetime.strftime(date, date_format)
+        date = datetime.strptime(date, date_format)
+        return date
+    elif isinstance(date, str):
+        try:
+            return pd.to_datetime(date).to_pydatetime()
+        except ValueError:
+            print(f"Invalid date string: {date}")
+            return -1
+    elif isinstance(date, pd.Timestamp):
+        return date.to_pydatetime()
+    elif isinstance(date, datetime):
+        return date
+    else:
+      print(f"Unsupported date type: {type(date)}")
+      return -2
 
-# print(kst1)
+if __name__ == "__main__":
+    # date = set_datetime(None)
+    # print(date)
 
-# date1 = datetime(2024, 2, 1, 9, 30, 0)
-# date2 = datetime(2025, 3, 3, 15, 45, 30)
+    date1_str = "2025-02-02 09:00:20"
+    date2_str = "2024-02-02 07:25:15"
 
-# time_difference = relativedelta(date2, date1)
+    date_format = "%Y-%m-%d %H:%M:%S"
 
-# print("chd:", time_difference)
-# print("년:", time_difference.years)
-# print("월:", time_difference.months)
-# print("일:", time_difference.days)
-# print("시간:", time_difference.hours)
-# print("분:", time_difference.minutes)
-# print("초:", time_difference.seconds)
+    date1 = datetime.strptime(date1_str, date_format)
+    date2 = datetime.strptime(date2_str, date_format)
 
-date_format = "%Y-%m-%d %H:%M:%S"  # 날짜 형식 정의
+    time_difference = date1 - date2
+    total_minute1, total_second = divmod(time_difference.total_seconds(), 60)
+    total_hour1, total_minute = divmod(total_minute1, 60)
+    total_day, total_hour = divmod(total_hour1, 24)
 
-date1_str = "2023-03-02 00:00:00"
-date2_str = "2024-03-02 00:00:00"
+    print(f"total_day : {total_day:,.0f}")
+    print(f"total_hour : {total_hour:,.0f}")
+    print(f"total_minute : {total_minute:,.0f}")
+    print(f"total_second : {total_second:,.0f}")
 
-date1 = datetime.strptime(date1_str, date_format)
-date2 = datetime.strptime(date2_str, date_format)
+    date3 = date1 - timedelta(days=total_day, hours=total_hour, minutes=total_minute, seconds=total_second)
+    print(f"date3 : {date3}")
+    date4 = date1 - timedelta(seconds=time_difference.total_seconds())
+    print(f"date4 : {date4}")
 
-# print(f"Type of date1 : {type(date1)}")
+    tm = total_day * 24 * 60 + total_hour * 60 + total_minute
+    if total_second > 0:
+        tm += 1
+    date5 = date1 - timedelta(seconds=time_difference.total_seconds())
+    print(f"\ndate5 : {date5}")
 
-# if type(date1) == datetime:
-#     print("This is Datetime")
+    date5_1 = date5.replace(second=0)
+    print(f"date5_1 : {date5_1}")
 
-time_difference = date2 - date1
-
-minutes_difference = time_difference.total_seconds() / 60
-print(f"분 차이: {minutes_difference:,.0f}분")
-hours_difference = time_difference.total_seconds() / (60*60)
-print(f"시 차이: {hours_difference:,.0f}시")
-days_difference = time_difference.total_seconds() / (60*60*24)
-print(f"일 차이: {days_difference:,.0f}일")
+    date5_str = datetime.strftime(date5, "%Y-%m-%d %H:%M:00")
+    date6 = datetime.strptime(date5_str, date_format)
+    print(f"date5_str : {date5_str}")
+    print(f"date6 : {date6}")

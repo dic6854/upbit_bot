@@ -3,6 +3,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 import time
+import os
 
 MAX_COUNT = 200
 
@@ -37,6 +38,37 @@ def fetch_ohlcv_5min(ticker, interval, count, to_kst):
 
     return df
 
+def set_datetime(date: str | pd.Timestamp | datetime | None) -> datetime:
+    if date is None:
+        date = datetime.now()
+        date_format = "%Y-%m-%d %H:%M:%S"
+        date = datetime.strftime(date, date_format)
+        date = datetime.strptime(date, date_format)
+        return date
+    elif isinstance(date, str):
+        try:
+            return pd.to_datetime(date).to_pydatetime()
+        except ValueError:
+            print(f"Invalid date string: {date}")
+            return -1
+    elif isinstance(date, pd.Timestamp):
+        return date.to_pydatetime()
+    elif isinstance(date, datetime):
+        return date
+    else:
+      print(f"Unsupported date type: {type(date)}")
+      return -2
+
+def save_csv(ticker, interval, count, start_kst, end_kst):
+    start_kst = set_datetime(start_kst)
+    end_kst = set_datetime(end_kst)
+
+    time_difference = end_kst - start_kst
+    total_minutes = time_difference.total_seconds()/60
+
+
+
+
 if __name__ == "__main__":
     ticker = "KRW-BTC"
     interval = "minute5"
@@ -49,10 +81,14 @@ if __name__ == "__main__":
     df = fetch_ohlcv_5min(ticker, interval, count, to_kst)
     print(df)
 
-    df.to_csv("mydata.csv", header=False)
+    file_path = "hdata/mydata1.csv"
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+    df.to_csv("hdata/mydata1.csv", mode='a', header=False)
     print("CSV 파일 저장 완료!")
 
     time.sleep(3)
 
-    df.to_csv("mydata.csv", mode='a', header=False)
+    df.to_csv("hdata/mydata1.csv", mode='a', header=False)
     print("CSV 파일2 저장 완료!")
