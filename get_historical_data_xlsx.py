@@ -33,7 +33,7 @@ def fetch_ohlcv_5min(ticker, interval, count, to_kst, tc, ct):
             to_utc = to_utc + timedelta(minutes=MAX_COUNT * UNIT)
             df1 = pyupbit.get_ohlcv(ticker, interval=interval, count=MAX_COUNT, to=to_utc)
             df = pd.concat([df, df1])
-            print(f"[{ct} / {tc}] - [{i} / {quotient}] finished")
+            print(f"[{ct} / {tc}] - [{i} / {quotient}] - [{ticker}] is finished")
             time.sleep(0.15)
 
     return df
@@ -51,7 +51,7 @@ def file_remove(fname):
             print(f"파일 삭제 중 오류 발생: {e}")
             return False
     else:
-        print(f"{fname} 파일 없음")
+        # print(f"{fname} 파일 없음")
         return True
 
 def set_datetime(date: str | pd.Timestamp | datetime | None) -> datetime:
@@ -127,16 +127,15 @@ def save_excel(ticker, interval, start_kst, end_kst, file_name, sheet_name, fmod
 if __name__ == "__main__":
     interval="minute5"
     start_kst="2024-01-01 08:59:00"
-    # start_kst="2025-03-01 08:59:00"
     end_kst="2025-03-03 18:21:00"
 
     krw_tickers = pyupbit.get_tickers(fiat="KRW")
     t_coin = len(krw_tickers)
-    ct = 1
 
-    for krw_ticker in krw_tickers:
-        ticker = krw_ticker
-        # coin = ticker.split("-")[1]
+    start_number = 26
+    ct = start_number+1
+    for i in range(start_number, len(krw_tickers)):
+        ticker = krw_tickers[i]
         fn = f"mydata/{ticker}.xlsx"
-        save_excel(ticker="KRW-BTC", interval=interval, start_kst=start_kst, end_kst=end_kst, file_name=fn, sheet_name=interval, fmode=True, tc=t_coin, ct=ct)
+        save_excel(ticker=ticker, interval=interval, start_kst=start_kst, end_kst=end_kst, file_name=fn, sheet_name=interval, fmode=True, tc=t_coin, ct=ct)
         ct += 1
