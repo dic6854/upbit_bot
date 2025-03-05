@@ -132,7 +132,7 @@ if __name__ == "__main__":
     krw_tickers = pyupbit.get_tickers(fiat="KRW")
     t_coin = len(krw_tickers)
 
-    start_number = 26
+    start_number = 0
     ct = start_number+1
     for i in range(start_number, len(krw_tickers)):
         ticker = krw_tickers[i]
