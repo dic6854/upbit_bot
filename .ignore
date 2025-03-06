@@ -128,15 +128,15 @@ celerybeat.pid
 *.sage.py
 
 # Data Files
-hdata
-mydata
-data
+hdata/
+mydata/
+data/
 *.csv
 *.xlsx
 
 # Environments
-.env
-.venv
+.env/
+.venv/
 env/
 venv/
 ENV/
