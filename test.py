@@ -1,94 +1,95 @@
-import backtrader as bt
+import pyupbit
 import pandas as pd
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
+import time
+import os
 
-class RSIBollingerMACross(bt.Strategy):
-    params = (
-        ('rsi_period', 14),
-        ('rsi_upper', 60),  # 더 완화: 65 → 60
-        ('rsi_lower', 40),  # 더 완화: 35 → 40
-        ('sma_short', 5),
-        ('sma_long', 20),
-        ('size', 0.01),
-    )
+MAX_COUNT = 200
+UNIT = 5
 
-    def __init__(self):
-        self.rsi = bt.indicators.RSI(self.data.close, period=self.p.rsi_period)
-        self.sma_short = bt.indicators.SimpleMovingAverage(
-            self.data.close, period=self.p.sma_short
-        )
-        self.sma_long = bt.indicators.SimpleMovingAverage(
-            self.data.close, period=self.p.sma_long
-        )
-        self.ma_cross = bt.indicators.CrossOver(self.sma_short, self.sma_long)
-        self.order = None
+def fetch_ohlcv_5min(ticker, interval, count, to_kst):
+    if type(to_kst) == str:
+        to_kst = datetime.strptime(to_kst, "%Y-%m-%d %H:%M:%S")
 
-    def log(self, txt):
-        dt = self.datas[0].datetime.datetime(0)
-        print(f'{dt}: {txt}')
+    quotient, remainder = divmod(count, MAX_COUNT)
+    quotient = int(quotient)
+    remainder = int(remainder)
 
-    def notify_order(self, order):
-        if order.status in [order.Completed]:
-            if order.isbuy():
-                self.log(f'BUY EXECUTED, Price: {order.executed.price:,.0f}')
-            elif order.issell():
-                self.log(f'SELL EXECUTED, Price: {order.executed.price:,.0f}')
-            self.order = None
+    if quotient == 0 and remainder == 0 :
+        print("count is ZERO.")
+        return None
 
-    def next(self):
-        if self.order:
-            return
+    to_go_kst = to_kst - timedelta(minutes=(count * UNIT)) + timedelta(minutes=(remainder * UNIT))
+    to_utc = to_go_kst - timedelta(hours=9)
+    
+    df = pd.DataFrame()
+    if remainder != 0:
+        df1 = pyupbit.get_ohlcv(ticker, interval=interval, count=remainder, to=to_utc)
+        df = pd.concat([df, df1])
 
-        price = self.data.close[0]
-        rsi = self.rsi[0]
-        ma_cross = self.ma_cross[0]
+    if quotient != 0:
+        for i in range(quotient):
+            to_utc = to_utc + timedelta(minutes=MAX_COUNT * UNIT)
+            df1 = pyupbit.get_ohlcv(ticker, interval=interval, count=MAX_COUNT, to=to_utc)
+            df = pd.concat([df, df1])
+            print(f"[{i} / {quotient}] - [{ticker}] is finished")
+            time.sleep(0.15)
 
-        # 디버깅용 로그
-        self.log(f'RSI: {rsi:.2f}, Price: {price:,.0f}, MA Cross: {ma_cross}')
+    return df
 
-        if not self.position:
-            if rsi <= self.p.rsi_lower and ma_cross > 0:
-                self.log(f'BUY SIGNAL - RSI: {rsi:.2f}, Price: {price:,.0f}')
-                self.order = self.buy(size=self.p.size)
-        elif self.position:
-            if rsi >= self.p.rsi_upper and ma_cross < 0:
-                self.log(f'SELL SIGNAL - RSI: {rsi:.2f}, Price: {price:,.0f}')
-                self.order = self.sell(size=self.p.size)
-
-if __name__ == '__main__':
-    cerebro = bt.Cerebro()
-    cerebro.addstrategy(RSIBollingerMACross)
-
-    # 데이터 로드 및 확인
-    df = pd.read_excel('KRW-BTC.xlsx', parse_dates=[0], index_col=0)
-    print("Data Preview:")
-    print(df.head())  # 데이터 확인용 출력
-    print("Columns:", df.columns.tolist())  # 열 이름 확인
-
-    # 열 이름 조정 (필요 시 주석 해제)
-    # df = df.rename(columns={'시가': 'open', '고가': 'high', '저가': 'low', '종가': 'close', '거래량': 'volume'})
-
-    data = bt.feeds.PandasData(dataname=df)
-    cerebro.adddata(data)
-    cerebro.broker.setcash(10000000)  # 1000만 원
-    cerebro.broker.setcommission(commission=0.0005)  # 0.05%
-
-    # 분석기 추가
-    cerebro.addanalyzer(bt.analyzers.SharpeRatio, _name='sharpe')
-    cerebro.addanalyzer(bt.analyzers.Returns, _name='returns')
-    cerebro.addanalyzer(bt.analyzers.TradeAnalyzer, _name='trades')
-
-    print('Starting Portfolio Value: %.2f' % cerebro.broker.getvalue())
-    results = cerebro.run()
-    print('Final Portfolio Value: %.2f' % cerebro.broker.getvalue())
-
-    strat = results[0]
-    print('Sharpe Ratio:', strat.analyzers.sharpe.get_analysis().get('sharperatio', 'N/A'))
-    print('Total Return:', strat.analyzers.returns.get_analysis().get('rtot', 'N/A'))
-
-    trade_analysis = strat.analyzers.trades.get_analysis()
-    total_trades = trade_analysis.get('total', {}).get('total', 0) if trade_analysis else 0
-    print('Total Trades:', total_trades)
-    if total_trades > 0:
-        print('Profit/Loss:', trade_analysis.get('pnl', {}).get('net', {}).get('total', 'N/A'))
+def set_datetime(date: str | pd.Timestamp | datetime | None) -> datetime:
+    if date is None:
+        date = datetime.now()
+        date_format = "%Y-%m-%d %H:%M:%S"
+        date = datetime.strftime(date, date_format)
+        date = datetime.strptime(date, date_format)
+        return date
+    elif isinstance(date, str):
+        try:
+            return pd.to_datetime(date).to_pydatetime()
+        except ValueError:
+            print(f"Invalid date string: {date}")
+            return -1
+    elif isinstance(date, pd.Timestamp):
+        return date.to_pydatetime()
+    elif isinstance(date, datetime):
+        return date
     else:
-        print('No trades executed.')
+      print(f"Unsupported date type: {type(date)}")
+      return -1
+
+def add_excel(ticker, interval, start_kst, end_kst, file_name, sheet_name):
+    start_kst = set_datetime(start_kst)
+    if start_kst == -1:
+        return None
+    end_kst = set_datetime(end_kst)
+    if end_kst == -1:
+        return None
+
+    time_difference = end_kst - start_kst
+    total_minute1, total_second = divmod(time_difference.total_seconds(), 60)
+    if total_second != 0:
+        total_minute1 += 1
+    total_minute5, total_minute_remain = divmod(total_minute1, UNIT)
+    if total_minute_remain != 0:
+        total_minute5 += 1
+
+    df = fetch_ohlcv_5min(ticker, interval=interval, count=total_minute5, to_kst=end_kst)
+
+    df.to_excel(excel_writer=file_name, sheet_name=sheet_name, index=True)
+    print(f"{file_name} 파일 저장 완료!")
+
+if __name__ == "__main__":
+    file_name = "KRW-BTC.xlsx"
+    new_file_name = "KRW-BTC1.xlsx"
+    sheet_name = "minute5"
+    df1 = pd.DataFrame()
+
+    ticker = "KRW-BTC"
+    interval="minute5"
+    start_kst = "2024-01-01 08:59:00"
+    end_kst   = "2025-03-03 18:21:00"
+    df = add_excel(ticker, interval, start_kst, end_kst, file_name, sheet_name)
+
+df1.to_excel(excel_writer=new_file_name, sheet_name=sheet_name, index=True, engine='openpyxl')

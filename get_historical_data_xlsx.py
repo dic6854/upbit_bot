@@ -8,7 +8,7 @@ import os
 MAX_COUNT = 200
 UNIT = 5
 
-def fetch_ohlcv_5min(ticker, interval, count, to_kst, tc, ct):
+def fetch_ohlcv_5min(ticker, interval, count, to_kst):
     if type(to_kst) == str:
         to_kst = datetime.strptime(to_kst, "%Y-%m-%d %H:%M:%S")
 
@@ -33,7 +33,7 @@ def fetch_ohlcv_5min(ticker, interval, count, to_kst, tc, ct):
             to_utc = to_utc + timedelta(minutes=MAX_COUNT * UNIT)
             df1 = pyupbit.get_ohlcv(ticker, interval=interval, count=MAX_COUNT, to=to_utc)
             df = pd.concat([df, df1])
-            print(f"[{ct} / {tc}] - [{i} / {quotient}] - [{ticker}] is finished")
+            print(f"[{i} / {quotient}] - [{ticker}] is finished")
             time.sleep(0.15)
 
     return df
@@ -100,7 +100,7 @@ def save_csv(ticker, interval, start_kst, end_kst, file_name, fmode, tc, ct):
     print(f"{fn} 파일 저장 완료!")
 
 
-def save_excel(ticker, interval, start_kst, end_kst, file_name, sheet_name, fmode, tc, ct):
+def save_excel(ticker, interval, start_kst, end_kst, file_name, sheet_name):
     start_kst = set_datetime(start_kst)
     if start_kst == -1:
         return None
@@ -116,26 +116,21 @@ def save_excel(ticker, interval, start_kst, end_kst, file_name, sheet_name, fmod
     if total_minute_remain != 0:
         total_minute5 += 1
 
-    df = fetch_ohlcv_5min(ticker, interval=interval, count=total_minute5, to_kst=end_kst, tc=tc, ct=ct)
-
-    if fmode == True:
-        file_remove(fn)
+    df = fetch_ohlcv_5min(ticker, interval=interval, count=total_minute5, to_kst=end_kst)
 
     df.to_excel(excel_writer=file_name, sheet_name=sheet_name, index=True)
     print(f"{file_name} 파일의 {sheet_name} 쉬트트 저장 완료!")
 
+
 if __name__ == "__main__":
     interval="minute5"
-    start_kst="2024-01-01 08:59:00"
-    end_kst="2025-03-03 18:21:00"
+    start_kst = "2024-01-01 08:59:00"
+    end_kst   = "2025-03-03 18:21:00"
 
     krw_tickers = pyupbit.get_tickers(fiat="KRW")
-    t_coin = len(krw_tickers)
 
-    start_number = 0
-    ct = start_number+1
-    for i in range(start_number, len(krw_tickers)):
+    for i in range(len(krw_tickers)):
         ticker = krw_tickers[i]
         fn = f"mydata/{ticker}.xlsx"
-        save_excel(ticker=ticker, interval=interval, start_kst=start_kst, end_kst=end_kst, file_name=fn, sheet_name=interval, fmode=True, tc=t_coin, ct=ct)
-        ct += 1
+        save_excel(ticker=ticker, interval=interval, start_kst=start_kst, end_kst=end_kst, file_name=fn, sheet_name=interval)
+
