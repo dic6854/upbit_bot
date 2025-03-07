@@ -1,95 +1,43 @@
 import pyupbit
 import pandas as pd
-from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
-import time
-import os
+import ta
 
-MAX_COUNT = 200
-UNIT = 5
+def save_bollinger_macd_rsi(ticker, interval):
+    # 데이터 불러오기
+    file = f"mydata/{ticker}.xlsx"
+    df = pd.read_excel(file, index_col=0, parse_dates=True, engine='openpyxl')
+    df = df.sort_index()  # 날짜 순서 정렬
+    df = df.groupby(df.index).last()  # 날짜가 중복된 경우 뒤의 것을 유지하고 앞을 것을 삭제한다.
 
-def fetch_ohlcv_5min(ticker, interval, count, to_kst):
-    if type(to_kst) == str:
-        to_kst = datetime.strptime(to_kst, "%Y-%m-%d %H:%M:%S")
+    # 기술적 지표 추가
+    # 볼린저 밴드
+    df['BB_Middle'] = ta.volatility.bollinger_mavg(df['close'], window=20)
+    df['BB_Upper'] = ta.volatility.bollinger_hband(df['close'], window=20, window_dev=2)
+    df['BB_Lower'] = ta.volatility.bollinger_lband(df['close'], window=20, window_dev=2)
 
-    quotient, remainder = divmod(count, MAX_COUNT)
-    quotient = int(quotient)
-    remainder = int(remainder)
+    print(f"Bollinger Band Indicators oF {ticker} are calculated.")
 
-    if quotient == 0 and remainder == 0 :
-        print("count is ZERO.")
-        return None
+    # MACD
+    df['MACD_26_12'] = ta.trend.macd(df['close'], window_slow=26, window_fast=12)
+    df['MACD_Signal_26_12_9'] = ta.trend.macd_signal(df['close'], window_slow=26, window_fast=12, window_sign=9)
 
-    to_go_kst = to_kst - timedelta(minutes=(count * UNIT)) + timedelta(minutes=(remainder * UNIT))
-    to_utc = to_go_kst - timedelta(hours=9)
-    
-    df = pd.DataFrame()
-    if remainder != 0:
-        df1 = pyupbit.get_ohlcv(ticker, interval=interval, count=remainder, to=to_utc)
-        df = pd.concat([df, df1])
+    print(f"MACD oF {ticker} are calculated.")
 
-    if quotient != 0:
-        for i in range(quotient):
-            to_utc = to_utc + timedelta(minutes=MAX_COUNT * UNIT)
-            df1 = pyupbit.get_ohlcv(ticker, interval=interval, count=MAX_COUNT, to=to_utc)
-            df = pd.concat([df, df1])
-            print(f"[{i} / {quotient}] - [{ticker}] is finished")
-            time.sleep(0.15)
+    # RSI
+    df['RSI_14'] = ta.momentum.rsi(df['close'], window=14)
 
-    return df
+    print(f"RSI oF {ticker} are calculated.")
 
-def set_datetime(date: str | pd.Timestamp | datetime | None) -> datetime:
-    if date is None:
-        date = datetime.now()
-        date_format = "%Y-%m-%d %H:%M:%S"
-        date = datetime.strftime(date, date_format)
-        date = datetime.strptime(date, date_format)
-        return date
-    elif isinstance(date, str):
-        try:
-            return pd.to_datetime(date).to_pydatetime()
-        except ValueError:
-            print(f"Invalid date string: {date}")
-            return -1
-    elif isinstance(date, pd.Timestamp):
-        return date.to_pydatetime()
-    elif isinstance(date, datetime):
-        return date
-    else:
-      print(f"Unsupported date type: {type(date)}")
-      return -1
-
-def add_excel(ticker, interval, start_kst, end_kst, file_name, sheet_name):
-    start_kst = set_datetime(start_kst)
-    if start_kst == -1:
-        return None
-    end_kst = set_datetime(end_kst)
-    if end_kst == -1:
-        return None
-
-    time_difference = end_kst - start_kst
-    total_minute1, total_second = divmod(time_difference.total_seconds(), 60)
-    if total_second != 0:
-        total_minute1 += 1
-    total_minute5, total_minute_remain = divmod(total_minute1, UNIT)
-    if total_minute_remain != 0:
-        total_minute5 += 1
-
-    df = fetch_ohlcv_5min(ticker, interval=interval, count=total_minute5, to_kst=end_kst)
-
+    file_name = f"data/{ticker}.xlsx"
+    sheet_name = interval
     df.to_excel(excel_writer=file_name, sheet_name=sheet_name, index=True)
-    print(f"{file_name} 파일 저장 완료!")
+    print(f"{file_name} 파일의 {sheet_name} 쉬트트 저장 완료!")
 
 if __name__ == "__main__":
-    file_name = "KRW-BTC.xlsx"
-    new_file_name = "KRW-BTC1.xlsx"
-    sheet_name = "minute5"
-    df1 = pd.DataFrame()
+    interval = "minute5"
 
-    ticker = "KRW-BTC"
-    interval="minute5"
-    start_kst = "2024-01-01 08:59:00"
-    end_kst   = "2025-03-03 18:21:00"
-    df = add_excel(ticker, interval, start_kst, end_kst, file_name, sheet_name)
+    krw_tickers = pyupbit.get_tickers(fiat="KRW")
 
-df1.to_excel(excel_writer=new_file_name, sheet_name=sheet_name, index=True, engine='openpyxl')
+    for i in range(len(krw_tickers)):
+        ticker = krw_tickers[i]
+        save_bollinger_macd_rsi(ticker, interval)
