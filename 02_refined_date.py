@@ -25,14 +25,23 @@ for i in range(1, 6, 4):
     print(f"Lenth of df_t : {lenth_of_df_t}")
     print(df_t)
 
-    if 
+    if total_count > lenth_of_df_t:
+        print("Missing Data Processing")
+
+        interval = timedelta(minutes=i)
+        new_index = pd.date_range(df_t.index.min(), df_t.index.max(), freq=interval)
+        print(f"interval={interval}, lenth of new_index = {len(new_index)}")
+        print(f"new_index={new_index}")
+        df_t = df_t.reindex(new_index)
+        df_t = df_t.ffill()
+
+    elif total_count < lenth_of_df_t:
+        print("Over the Data Processing")
+        break
+    else:
+        print("Skeep processing")
  
-    interval = timedelta(minutes=i)
-    new_index = pd.date_range(df_t.index.min(), df_t.index.max(), freq=interval)
-    print(f"interval={interval}, lenth of new_index = {len(new_index)}")
-    print(f"new_index={new_index}")
-    df_t = df_t.reindex(new_index)
-    df_t = df_t.ffill()
+
 
    '''
     lenth_of_df_t = len(df_t)
