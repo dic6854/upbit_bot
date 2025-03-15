@@ -1,10 +1,25 @@
+import pyupbit
 import pandas as pd
-import time
-from datetime import datetime
-import talib
+# import time
+# from datetime import datetime
+# import talib
 
-file_name_m1 = "test/KRW-BTC_m1.csv"
-file_name_m5 = "test/KRW-BTC_m5.csv"
+def get_price(buy_time, df):
+    while True:
+        try:
+            buy_time = buy_time + pd.Timedelta(minutes=1)
+            buy_price = df.loc[buy_time, 'close']
+            return buy_price, buy_time
+        except:
+            buy_time += pd.Timedelta(minutes=1)
+
+
+
+ticker = "KRW-BTC"
+file_name_m1 = f"test/{ticker}_m1.csv"
+file_name_m5 = f"test/{ticker}_m5.csv"
+trade_output = f"test/{ticker}_trade_m5.csv"
+profit_output = f"test/{ticker}_profit_m5.csv"
 
 df_m1 = pd.read_csv(file_name_m1, index_col=0)
 df_m5 = pd.read_csv(file_name_m5, index_col=0)
@@ -24,13 +39,13 @@ capital = initial_capital
 profits = []
 U = 0.001
 
-cut_start = pd.to_datetime("2025-03-01 08:55:00")
-cut_end = cut_start + pd.Timedelta(days=1)
+cut_start = pd.to_datetime("2024-01-01 08:55:00")
 
-# t = 1
 while True:
     cut_end = cut_start + pd.Timedelta(days=1)
+    
     df_m5_t = df_m5[(df_m5.index >= cut_start) & (df_m5.index <= cut_end)]
+    print(f"cut_start={cut_start}, cut_end = {cut_end}, len(df_m5_t)={len(df_m5_t)}")
 
     if len(df_m5_t) < 288:
         break
@@ -42,44 +57,43 @@ while True:
         curr_datetime = curr_row.name
 
         if position == 0 and prev_row['close'] <= prev_row['SMA20'] and curr_row['close'] >= curr_row['SMA20'] :
-            buy_time = curr_datetime + pd.Timedelta(minutes=1)
-            buy_price = df_m1.loc[buy_time, 'close']
+            buy_price, buy_time = get_price(curr_datetime, df_m1)
             trade_flag = 'buy'
             volume = U
             capital = capital - buy_price * U - (buy_price * U) * 0.0005
             trade = [buy_time, trade_flag, buy_price, volume, capital]
             trades.append(trade)            
-            print(f"매수: {buy_time}, 가격: {buy_price}, 수량: {U}")
+            # print(f"매수: {buy_time}, 가격: {buy_price}, 수량: {U}")
             position = 1
         elif position == 1  and prev_row['close'] >= prev_row['SMA20'] and curr_row['close'] <= curr_row['SMA20'] :
-            sell_time = curr_datetime + pd.Timedelta(minutes=1)
-            sell_price = df_m1.loc[sell_time, 'close']
+            sell_price, sell_time = get_price(curr_datetime, df_m1)
             trade_flag = 'sell'
             volume = U
             capital = capital + sell_price * U - (sell_price * U) * 0.0005
             trade = [sell_time, trade_flag, sell_price, volume, capital]
             trades.append(trade)            
-            print(f"매도: {sell_time}, 가격: {sell_price}, 손익: {capital-initial_capital}")
+            # print(f"매도: {sell_time}, 가격: {sell_price}, 손익: {capital-initial_capital}")
             position = 0
 
     if position == 1:
-        sell_time = curr_datetime + pd.Timedelta(minutes=1)
-        sell_price = df_m1.loc[sell_time, 'close']
+        sell_price, sell_time = get_price(curr_datetime, df_m1)
         trade_flag = 'sell'
         volume = U
         capital = capital + sell_price * U - (sell_price * U) * 0.0005
         trade = [sell_time, trade_flag, sell_price, volume, capital]
         trades.append(trade)            
-        print(f"매도: {sell_time}, 가격: {sell_price}, 손익: {capital-initial_capital}")
+        # print(f"매도: {sell_time}, 가격: {sell_price}, 손익: {capital-initial_capital}")
         position = 0        
 
-    profit = float(capital-initial_capital)
+    profit = [cut_start, float(capital-initial_capital)]
     profits.append(profit)
 
     capital = initial_capital
     cut_start = cut_start + pd.Timedelta(days=1)
 
 df = pd.DataFrame(trades, columns=['time', 'trade', 'price', 'volume', 'capital'])
-df.to_csv("test/output.csv")
-print(profits)
-print(f"Total Profit : {sum(profits)}")
+df.to_csv(trade_output)
+
+df = pd.DataFrame(profits, columns=['time', 'profit'])
+df.to_csv(profit_output)
+
