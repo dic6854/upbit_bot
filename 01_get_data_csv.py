@@ -148,13 +148,15 @@ if __name__ == "__main__":
         ticker = krw_tickers[i]
 
         start_kst = "2024-01-01 09:00:00"
-        end_kst   = "2025-03-14 09:00:00"
+        end_kst   = "2025-03-16 09:00:00"
         m_unit = 1
         add_csv(ticker, m_unit, start_kst, end_kst)
         start_kst = "2024-01-01 06:00:00"
-        end_kst   = "2025-03-14 09:00:00"
+        end_kst   = "2025-03-16 09:00:00"
         m_unit = 5
         add_csv(ticker, m_unit, start_kst, end_kst)
 
         print(f"[{ct} / {tt}] - {ticker} 파일 저장 완료")
         ct += 1
+
+        exit()
