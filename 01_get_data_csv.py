@@ -100,7 +100,10 @@ def add_csv(ticker, m_unit, start_kst, end_kst):
     old_df = pd.DataFrame()
     if os.path.exists(file_path_in):
         old_df = pd.read_csv(file_path_in, index_col=0)
-        old_df.index = pd.to_datetime(old_df.index, format="%Y-%m-%d %H:%M:%S")
+        try:
+            old_df.index = pd.to_datetime(old_df.index, format="%Y-%m-%d %H:%M:%S")
+        except:
+            old_df.index = pd.to_datetime(old_df.index, format="%Y-%m-%d %H:%M")
 
     start_kst = set_datetime(start_kst)
     if start_kst == False:
