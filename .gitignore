@@ -13,7 +13,6 @@ data/
 hdata/
 mydata/
 test/
-tmp/
 .Python
 build/
 develop-eggs/
