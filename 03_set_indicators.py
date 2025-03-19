@@ -10,7 +10,7 @@ tt = len(krw_tickers)
 ct = 1
 for i in range(tt):
     ticker = krw_tickers[i]
-    file_name_m5 = f"hdata/{ticker}_m5.csv"
+    file_name_m5 = f"cdata/{ticker}_m5.csv"
     df_m5 = pd.read_csv(file_name_m5, index_col=0)
 
     # 5, 20 SMA 계산 (5분봉 기준)
