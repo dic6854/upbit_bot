@@ -165,8 +165,8 @@ if __name__ == "__main__":
 
     tt = len(krw_tickers)
     
-    # for i in range(tt):
-    for i in range(58, tt):
+    # for i in range(tt): KRW-AGLD
+    for i in range(143, tt):
         ct = i + 1
         ticker = krw_tickers[i]
 
