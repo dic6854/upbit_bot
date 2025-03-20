@@ -1,13 +1,21 @@
 import pyupbit
-from get_keys import get_keys
+import os
 
-access_key, secret_key = get_keys()
+def get_keys():
+    access_key = os.environ['UPBIT_ACCESS_KEY']
+    secret_key = os.environ['UPBIT_SECRET_KEY']
 
-# 로그인
-upbit = pyupbit.Upbit(access_key, secret_key)
+    return access_key, secret_key
 
-# 내 잔고 조회
-balances = upbit.get_balances()
 
-for balance in balances:
-    print(balance)
+if __name__ == "__main__":
+    access_key, secret_key = get_keys()
+
+    # 로그인
+    upbit = pyupbit.Upbit(access_key, secret_key)
+
+    # 내 잔고 조회
+    balances = upbit.get_balances()
+
+    for balance in balances:
+        print(balance)
