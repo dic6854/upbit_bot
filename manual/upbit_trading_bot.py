@@ -2,7 +2,6 @@ import time
 import pyupbit
 import pandas as pd
 from datetime import datetime
-import os
 import logging
 
 # 로깅 설정
@@ -12,14 +11,8 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
-def get_keys():
-    access_key = os.environ['UPBIT_ACCESS_KEY']
-    secret_key = os.environ['UPBIT_SECRET_KEY']
-
-    return access_key, secret_key
-
 class UpbitTradingBot:
-    def __init__(self, access_key, secret_key, ticker="KRW-BTC", initial_capital=100000):
+    def __init__(self, access_key, secret_key, ticker="KRW-BTC", initial_capital=1000000):
         """
         업비트 자동 거래 봇 초기화
         :param access_key: 업비트 API access key
@@ -40,16 +33,6 @@ class UpbitTradingBot:
         if self.upbit is None:
             logging.error("업비트 API 연결 실패")
             raise Exception("업비트 API 연결 실패")
-        
-        # 잔고 확인
-        try:
-            krw_balance = self.get_balance("KRW")
-            if krw_balance < initial_capital:
-                logging.warning(f"KRW 잔고({krw_balance}원)가 초기 자본금({initial_capital}원)보다 적습니다.")
-                print(f"경고: KRW 잔고({krw_balance}원)가 초기 자본금({initial_capital}원)보다 적습니다.")
-                self.current_capital = krw_balance
-        except Exception as e:
-            logging.error(f"잔고 확인 중 오류 발생: {e}")
         
         logging.info(f"업비트 자동 거래 봇 초기화 완료 (티커: {ticker}, 초기 자본금: {initial_capital}원)")
         
@@ -82,8 +65,7 @@ class UpbitTradingBot:
         :return: 5분봉 OHLCV 데이터
         """
         try:
-            # 충분한 데이터를 위해 더 많은 캔들을 가져옴 (최소 23개 필요: 20개 SMA + 3개 신호 확인용)
-            df = pyupbit.get_ohlcv(self.ticker, interval="minute5", count=50)
+            df = pyupbit.get_ohlcv(self.ticker, interval="minute5", count=30)
             return df
         except Exception as e:
             logging.error(f"OHLCV 데이터 조회 실패: {e}")
@@ -105,17 +87,16 @@ class UpbitTradingBot:
         :param df: SMA가 계산된 데이터프레임
         :return: 매수 신호 여부 (True/False)
         """
-        if len(df) < 3:  # 최소 3개의 캔들이 필요 (현재 미완결 봉 제외하고 2개 이상)
+        if len(df) < 2:
             return False
             
-        # 완결된 봉들 사용 (최신 봉은 미완결 봉이므로 제외)
-        current_candle = df.iloc[-2]  # 가장 최근 완결된 봉
-        previous_candle = df.iloc[-3]  # 그 이전 완결된 봉
+        # 현재 봉과 이전 봉
+        current_candle = df.iloc[-1]
+        previous_candle = df.iloc[-2]
         
         # 상향 돌파 조건: 이전 봉은 SMA 아래, 현재 봉은 SMA 위
         if previous_candle['close'] < previous_candle['sma'] and current_candle['close'] > current_candle['sma']:
             logging.info(f"매수 신호 감지: 이전 종가({previous_candle['close']}) < 이전 SMA({previous_candle['sma']}), 현재 종가({current_candle['close']}) > 현재 SMA({current_candle['sma']})")
-            logging.info(f"매수 신호 캔들 시간: {df.index[-2]}")
             return True
         return False
         
@@ -125,17 +106,16 @@ class UpbitTradingBot:
         :param df: SMA가 계산된 데이터프레임
         :return: 매도 신호 여부 (True/False)
         """
-        if len(df) < 3:  # 최소 3개의 캔들이 필요 (현재 미완결 봉 제외하고 2개 이상)
+        if len(df) < 2:
             return False
             
-        # 완결된 봉들 사용 (최신 봉은 미완결 봉이므로 제외)
-        current_candle = df.iloc[-2]  # 가장 최근 완결된 봉
-        previous_candle = df.iloc[-3]  # 그 이전 완결된 봉
+        # 현재 봉과 이전 봉
+        current_candle = df.iloc[-1]
+        previous_candle = df.iloc[-2]
         
         # 하향 돌파 조건: 이전 봉은 SMA 위, 현재 봉은 SMA 아래
         if previous_candle['close'] > previous_candle['sma'] and current_candle['close'] < current_candle['sma']:
             logging.info(f"매도 신호 감지: 이전 종가({previous_candle['close']}) > 이전 SMA({previous_candle['sma']}), 현재 종가({current_candle['close']}) < 현재 SMA({current_candle['sma']})")
-            logging.info(f"매도 신호 캔들 시간: {df.index[-2]}")
             return True
         return False
         
@@ -154,11 +134,11 @@ class UpbitTradingBot:
             if current_price is None:
                 return False
                 
-            # 매수 가능한 최대 수량 계산 (수수료 0.05% + 여유분 0.01% = 0.06%) 고려)
-            max_amount = self.current_capital * 0.9994 / current_price
+            # 매수 가능한 최대 수량 계산 (수수료 0.05% 고려)
+            max_amount = self.current_capital * 0.9995 / current_price
             
             # 매수 주문
-            order = self.upbit.buy_market_order(self.ticker, self.current_capital * 0.9994)
+            order = self.upbit.buy_market_order(self.ticker, self.current_capital * 0.9995)
             if order and 'uuid' in order:
                 time.sleep(1)  # 주문 체결 대기
                 self.coin_balance = self.get_balance(self.ticker.split('-')[1])
@@ -224,13 +204,12 @@ class UpbitTradingBot:
         """
         logging.info("자동 거래 시작")
         print(f"자동 거래 시작 (티커: {self.ticker}, 초기 자본금: {self.initial_capital}원)")
-        print("완결된 5분봉 데이터만을 기준으로 매수/매도 신호를 판단합니다.")
         
         try:
             while True:
                 # 5분봉 데이터 조회 및 20SMA 계산
                 df = self.get_ohlcv()
-                if df is None or len(df) < 23:  # 최소 23개 필요 (20개 SMA + 3개 신호 확인용)
+                if df is None or len(df) < 20:
                     logging.warning("충분한 데이터를 가져오지 못했습니다. 5초 후 재시도합니다.")
                     time.sleep(5)
                     continue
@@ -241,14 +220,13 @@ class UpbitTradingBot:
                 current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 current_price = self.get_current_price()
                 print(f"[{current_time}] 현재 가격: {current_price}원, 자본금: {self.current_capital}원, 수익금: {self.profit}원")
-                print(f"마지막 완결 캔들 시간: {df.index[-2]}")  # 마지막 완결 캔들 시간 출력
                 
                 # 매수/매도 신호 확인 및 실행
                 if not self.is_holding and self.check_buy_signal(df):
-                    print("매수 신호 감지! 현재 시장가로 매수를 실행합니다.")
+                    print("매수 신호 감지! 매수를 실행합니다.")
                     self.buy()
                 elif self.is_holding and self.check_sell_signal(df):
-                    print("매도 신호 감지! 현재 시장가로 매도를 실행합니다.")
+                    print("매도 신호 감지! 매도를 실행합니다.")
                     self.sell()
                 
                 # 5초 대기 (너무 자주 API 호출하지 않도록)
@@ -269,13 +247,14 @@ class UpbitTradingBot:
 
 if __name__ == "__main__":
     # API 키 설정
-    ACCESS_KEY, SECRET_KEY = get_keys()
+    ACCESS_KEY = "your_access_key"
+    SECRET_KEY = "your_secret_key"
     
     # 거래할 암호화폐 티커 설정 (기본값: KRW-BTC)
     TICKER = "KRW-BTC"
     
     # 초기 자본금 설정
-    INITIAL_CAPITAL = 100000
+    INITIAL_CAPITAL = 1000000
     
     # 봇 생성 및 실행
     try:
