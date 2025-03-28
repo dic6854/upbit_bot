@@ -92,7 +92,7 @@ def add_csv(ticker, m_unit, start_kst, end_kst):
     global tt
     global ct
 
-    interval = f"minute{m_unit}"
+    # interval = f"minute{m_unit}"
     file_path_in = f"cdata/{ticker}_m{m_unit}.csv"
     file_path_out = f"cdata/{ticker}_m{m_unit}.csv"
 

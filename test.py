@@ -1,9 +1,8 @@
-import time
 import pyupbit
 import pandas as pd
 from datetime import datetime
 import os
-import logging
+
 
 def get_keys():
     access_key = os.environ['UPBIT_ACCESS_KEY']
@@ -11,26 +10,31 @@ def get_keys():
 
     return access_key, secret_key
 
-ACCESS_KEY, SECRET_KEY = get_keys()
+def get_trade_datetime(uuid):
+    order = upbit.get_individual_order(uuid)
+    created_at = order['trades'][0]['created_at']
+    ldatetime = datetime.strptime(created_at, "%Y-%m-%dT%H:%M:%S%z")
+    tmp_str_datetime = ldatetime.strftime("%Y-%m-%d %H:%M:%S")
+    trade_datetime = datetime.strptime(tmp_str_datetime, "%Y-%m-%d %H:%M:%S")
+    return trade_datetime
 
-upbit = pyupbit.Upbit(ACCESS_KEY, SECRET_KEY)
 
-krw_balance = upbit.get_balance("KRW")
-print(f"krw_balance = {krw_balance:,.0f}")
+if __name__ == "__main__":
+    ACCESS_KEY, SECRET_KEY = get_keys()
+    upbit = pyupbit.Upbit(ACCESS_KEY, SECRET_KEY)
 
-# ticker="KRW-BTC"
-# order = upbit.buy_market_order(ticker, 5000)
-# time.sleep(2)
-# print(f"order = {order}")
-
-# {'currency': 'BTC', 'balance': '0.0012345', 'locked': '0.0', 'avg_buy_price': '50000000.0', 'avg_buy_price_modified': False, 'unit_currency': 'KRW'}
-
-coin_balance = upbit.get_balance("BTC")
-print(f"coin_balance = {coin_balance:,.8f}")
-
-balances = upbit.get_balances()
-for balance in balances:
-    if balance['currency'] == 'BTC':
-        avg_buy_price = float(balance.get('avg_buy_price'))
-
-print(f"avg_buy_price = {avg_buy_price:,.0f}")
+    # 주문 내역 조회
+    market = "KRW-BTC"  # 조회할 마켓 (선택 사항)
+    state = "done"      # 상태 필터링: "done" (체결 완료), "wait" (대기 중), "cancel" (취소)
+    orders = upbit.get_order(ticker_or_uuid=market, state=state)
+    created_at = orders[0]['created_at']
+    ldatetime = datetime.strptime(created_at, "%Y-%m-%dT%H:%M:%S%z")
+    tmp_str_datetime = ldatetime.strftime("%Y-%m-%d %H:%M:%S")
+    trade_datetime = datetime.strptime(tmp_str_datetime, "%Y-%m-%d %H:%M:%S")
+    # uuid = orders[0]['uuid']
+    # order = upbit.get_individual_order(uuid)
+    # created_at = order['trades'][0]['created_at']
+    # ldatetime = datetime.strptime(created_at, "%Y-%m-%dT%H:%M:%S%z")
+    # tmp_str_datetime = ldatetime.strftime("%Y-%m-%d %H:%M:%S")
+    # trade_datetime = datetime.strptime(tmp_str_datetime, "%Y-%m-%d %H:%M:%S")
+    print(created_at)
