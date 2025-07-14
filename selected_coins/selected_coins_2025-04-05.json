@@ -1,0 +1,67 @@
+{
+    "date": "2025-04-05",
+    "selected_coins": [
+        "KRW-ORBS",
+        "KRW-ELF",
+        "KRW-XEM",
+        "KRW-SAFE",
+        "KRW-XRP"
+    ],
+    "detailed_results": [
+        {
+            "ticker": "KRW-ORBS",
+            "price": 29.14,
+            "uptrend_score": 6,
+            "price_change_5d": 3.5168738898756735,
+            "ma5_slope": 2.131018153117592,
+            "ma10_slope": -0.4509106281044269,
+            "ma20_slope": 0.022703854415908817,
+            "up_days": 2,
+            "volume_ratio": 0.4923020387054375
+        },
+        {
+            "ticker": "KRW-ELF",
+            "price": 372.0,
+            "uptrend_score": 5,
+            "price_change_5d": 9.090909090909092,
+            "ma5_slope": 5.878928987194408,
+            "ma10_slope": -0.08386916410400094,
+            "ma20_slope": -0.4815630159603743,
+            "up_days": 2,
+            "volume_ratio": 0.1273657836580632
+        },
+        {
+            "ticker": "KRW-XEM",
+            "price": 23.8,
+            "uptrend_score": 3,
+            "price_change_5d": 0.8902077151335348,
+            "ma5_slope": -9.628742514970071,
+            "ma10_slope": -9.6820862855659,
+            "ma20_slope": -4.478951620141814,
+            "up_days": 2,
+            "volume_ratio": 4.300346384507739
+        },
+        {
+            "ticker": "KRW-SAFE",
+            "price": 745.3,
+            "uptrend_score": 3,
+            "price_change_5d": -13.558339132451877,
+            "ma5_slope": -7.283113173866469,
+            "ma10_slope": 4.400476696951451,
+            "ma20_slope": 4.406404907100316,
+            "up_days": 0,
+            "volume_ratio": 0.12242304135672312
+        },
+        {
+            "ticker": "KRW-XRP",
+            "price": 3157.0,
+            "uptrend_score": 2,
+            "price_change_5d": -0.6607929515418502,
+            "ma5_slope": -2.694066787795251,
+            "ma10_slope": -5.741669386665085,
+            "ma20_slope": -1.9727434558029566,
+            "up_days": 3,
+            "volume_ratio": 0.35599435727163936
+        }
+    ]
+}
