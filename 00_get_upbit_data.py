@@ -3,7 +3,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 import time
 import os
-import talib
+# import talib
 
 MAX_COUNT = 200
 tt = 1
@@ -149,12 +149,12 @@ def fill_data(df, unit):
     return df
 
 
-def set_indicator(df):
-    # 5, 20 SMA 계산 (5분봉 기준)
-    df['SMA5'] = talib.SMA(df['close'], timeperiod=5)
-    df['SMA20'] = talib.SMA(df['close'], timeperiod=20)
+# def set_indicator(df):
+#     # 5, 20 SMA 계산 (5분봉 기준)
+#     df['SMA5'] = talib.SMA(df['close'], timeperiod=5)
+#     df['SMA20'] = talib.SMA(df['close'], timeperiod=20)
 
-    return df
+#     return df
 
 if __name__ == "__main__":
 
@@ -178,7 +178,7 @@ if __name__ == "__main__":
             print(f"[{ct} / {tt}] - [{ticker}] - 데이터 채우기 검증 완료")
 
             if unit == 5:
-                df = set_indicator(df)
+                # df = set_indicator(df)
                 print(f"[{ct} / {tt}] - [{ticker}] - 5분봉 5, 20 SMA 지표 설정 완료")
 
             file_name = f"adata/{ticker}_m{unit}.csv"
