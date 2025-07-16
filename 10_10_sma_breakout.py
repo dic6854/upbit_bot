@@ -2,7 +2,6 @@
 
 import pyupbit
 import pandas as pd
-import os
 import time
 import logging
 
@@ -10,22 +9,13 @@ import logging
 logging.basicConfig(
     filename="sma_breakout_log.txt",
     level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    encoding='utf-8'
 )
 
 
-def get_keys():
-    access_key = os.environ['UPBIT_ACCESS_KEY']
-    secret_key = os.environ['UPBIT_SECRET_KEY']
-
-    return access_key, secret_key
-
-
-
-if __name__ == "__main__":
-    # 로그인
-    myAccess_key, mySecret_key = get_keys()
-    upbit = pyupbit.Upbit(access=myAccess_key, secret=mySecret_key)
+def find_sma_breakout_coins():
+    """30일 SMA 상향 돌파 코인 검색"""
 
     # 모든 KRW 마켓 티커 가져오기
     tickers = pyupbit.get_tickers(fiat="KRW")
@@ -38,9 +28,9 @@ if __name__ == "__main__":
 
     for ticker in tickers:
         try:
-            # 일봉 데이터 가져오기 (31일치, 30일 SMA + 직전 캔들 비교용)
-            df = pyupbit.get_ohlcv(ticker, interval="day", count=31)
-            if df is None or len(df)<31:
+            # 일봉 데이터 가져오기 (32일치, 30일 SMA + 직전 캔들 비교용)
+            df = pyupbit.get_ohlcv(ticker, interval="day", count=32)
+            if df is None or len(df)<32:
                 logging.warning(f"{ticker}: 충분한 데이터 없음")
                 continue
         
@@ -52,26 +42,15 @@ if __name__ == "__main__":
         
             # 30일 SMA 계산
             sma30 = df['close'].rolling(window=30).mean()
-            curr_sma30 = sma30.iloc[-1]
-            prev_sma30 = sma30.iloc[-2]
-            prev_close = df['close'].iloc[-2]   # 직전 캔들 종가
+            curr0_sma30 = sma30.iloc[-1]    # 현재 캔들의 30일 단순이동평균값
+            prev1_sma30 = sma30.iloc[-2]    # 직전 캔들의 30일 단순이동평균값
+            prev2_sma30 = sma30.iloc[-3]    # 직전 직전 캔들의 30일 단순이동평균값
+            prev1_close = df['close'].iloc[-2]  # 직전 캔들 종가
+            prev2_close = df['close'].iloc[-3]  # 직전 직전 캔들 종가
 
-            # 상향 돌파 조건: 현재가 >= 당일의 SMA30값 and 직전 종가 < 직전일의 SMA30값
-            if current_price >= curr_sma30 and prev_close < prev_sma30:
-                # 가격 상승률 계산 (직전 종가 대비)
-                price_change = ((current_price - prev_close) / prev_close) * 100
-
-                breakout_coins.append({
-                    'ticker': ticker,
-                    'current_price': current_price,
-                    'sma30': sma30,
-                    'prev_close': prev_close,
-                    'price_change': price_change
-                })
-
-                logging.info(f"{ticker}: SMA 상향 돌파 - 현재가: {current_price:,.0f}원, "
-                             f"SMA30: {sma30:,.0f}원, 직전 종가: {prev_close:,.0f}원, "
-                             f"상승률: {price_change:.2f}%")
+            # 상향 돌파 조건: (직전 캔들 종가) >= (직전 캔들의 단순이동평균값) and (직전 직전 캔들 종가) < (직전 직전 캔들의 단순이동평균값)
+            if prev1_close >= prev1_sma30 and prev2_close < prev2_sma30 and current_price >= curr0_sma30:
+                breakout_coins.append(ticker)
 
             # API 호출 제한 방지
             time.sleep(0.1)
@@ -80,6 +59,12 @@ if __name__ == "__main__":
             logging.error(f"{ticker} 처리 중 오류: {e}")
             continue
 
+    return breakout_coins
+
+
+if __name__ == "__main__":
+    # 코인 검색
+    breakout_coins = find_sma_breakout_coins()
+
     print(breakout_coins)
-    # return breakout_coins
 
