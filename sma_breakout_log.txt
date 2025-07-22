@@ -1,0 +1,438 @@
+2025-07-22 01:32:51,992 - INFO - 총 182개 코인 조회 시작
+2025-07-22 01:32:57,175 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 01:33:01,649 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 01:33:07,564 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 01:33:12,395 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 01:33:19,681 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 01:33:20,943 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 01:41:19,104 - INFO - 총 182개 코인 조회 시작
+2025-07-22 01:41:24,051 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 01:41:28,338 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 01:41:33,980 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 01:41:38,587 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 01:41:45,591 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 01:41:46,802 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 02:31:22,314 - INFO - 총 182개 코인 조회 시작
+2025-07-22 02:31:27,272 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 02:31:31,541 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 02:31:37,179 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 02:31:41,796 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 02:31:48,786 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 02:31:50,023 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 02:32:12,631 - INFO - 총 182개 코인 조회 시작
+2025-07-22 02:32:17,620 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 02:32:22,034 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 02:32:27,785 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 02:32:32,487 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 02:32:39,681 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 02:32:40,927 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 02:36:36,512 - INFO - 총 182개 코인 조회 시작
+2025-07-22 02:36:41,448 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 02:36:45,721 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 02:36:51,337 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 02:36:55,983 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 02:36:57,709 - WARNING - KRW-RAY: 충분한 데이터 없음
+2025-07-22 02:37:02,859 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 02:37:04,077 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 02:40:19,685 - INFO - 총 182개 코인 조회 시작
+2025-07-22 02:40:24,888 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 02:40:29,436 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 02:40:35,347 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 02:40:40,223 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 02:40:47,561 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 02:40:48,863 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 02:48:01,006 - INFO - 총 182개 코인 조회 시작
+2025-07-22 02:48:04,093 - WARNING - KRW-LPT: 충분한 데이터 없음
+2025-07-22 02:48:06,122 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 02:48:07,391 - WARNING - KRW-ALT: 충분한 데이터 없음
+2025-07-22 02:48:10,438 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 02:48:12,243 - WARNING - KRW-RVN: 충분한 데이터 없음
+2025-07-22 02:48:13,512 - WARNING - KRW-AXL: 충분한 데이터 없음
+2025-07-22 02:48:16,055 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 02:48:18,398 - WARNING - KRW-POKT: 충분한 데이터 없음
+2025-07-22 02:48:20,753 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 02:48:22,580 - WARNING - KRW-RAY: 충분한 데이터 없음
+2025-07-22 02:48:27,946 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 02:48:29,238 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 02:48:31,799 - INFO - 총 182개 코인 조회 시작
+2025-07-22 02:48:34,869 - WARNING - KRW-LPT: 충분한 데이터 없음
+2025-07-22 02:48:36,850 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 02:48:38,152 - WARNING - KRW-ALT: 충분한 데이터 없음
+2025-07-22 02:48:41,189 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 02:48:43,023 - WARNING - KRW-RVN: 충분한 데이터 없음
+2025-07-22 02:48:44,320 - WARNING - KRW-AXL: 충분한 데이터 없음
+2025-07-22 02:49:46,151 - INFO - 총 182개 코인 조회 시작
+2025-07-22 02:49:49,214 - WARNING - KRW-LPT: 충분한 데이터 없음
+2025-07-22 02:49:51,226 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 02:49:52,502 - WARNING - KRW-ALT: 충분한 데이터 없음
+2025-07-22 02:49:55,605 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 02:49:57,440 - WARNING - KRW-RVN: 충분한 데이터 없음
+2025-07-22 02:49:58,722 - WARNING - KRW-AXL: 충분한 데이터 없음
+2025-07-22 02:50:01,285 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 02:50:03,663 - WARNING - KRW-POKT: 충분한 데이터 없음
+2025-07-22 02:50:06,000 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 02:50:07,814 - WARNING - KRW-RAY: 충분한 데이터 없음
+2025-07-22 02:50:13,185 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 02:50:14,470 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 02:50:17,007 - INFO - 총 182개 코인 조회 시작
+2025-07-22 02:50:22,201 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 02:50:23,480 - WARNING - KRW-ALT: 충분한 데이터 없음
+2025-07-22 02:50:26,541 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 02:50:28,355 - WARNING - KRW-RVN: 충분한 데이터 없음
+2025-07-22 02:50:29,643 - WARNING - KRW-AXL: 충분한 데이터 없음
+2025-07-22 02:50:32,171 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 02:50:36,835 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 02:50:38,558 - WARNING - KRW-RAY: 충분한 데이터 없음
+2025-07-22 02:50:43,664 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 02:50:44,880 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 02:54:05,221 - INFO - 총 182개 코인 조회 시작
+2025-07-22 02:54:10,432 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 02:54:14,940 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 02:54:20,890 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 02:54:25,707 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 02:54:33,054 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 02:54:34,340 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 02:54:36,899 - INFO - 총 182개 코인 조회 시작
+2025-07-22 02:54:42,099 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 02:54:46,602 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 02:54:52,338 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 02:54:56,960 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 02:55:03,937 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 02:55:05,163 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 03:02:11,017 - INFO - 총 182개 코인 조회 시작
+2025-07-22 03:02:15,975 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 03:02:17,167 - WARNING - KRW-ALT: 충분한 데이터 없음
+2025-07-22 03:02:20,082 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 03:02:21,808 - WARNING - KRW-RVN: 충분한 데이터 없음
+2025-07-22 03:02:23,025 - WARNING - KRW-AXL: 충분한 데이터 없음
+2025-07-22 03:02:25,405 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 03:02:29,998 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 03:02:31,716 - WARNING - KRW-RAY: 충분한 데이터 없음
+2025-07-22 03:02:36,825 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 03:02:38,042 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 03:02:40,419 - INFO - 총 182개 코인 조회 시작
+2025-07-22 03:02:45,390 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 03:02:46,594 - WARNING - KRW-ALT: 충분한 데이터 없음
+2025-07-22 03:02:49,532 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 03:02:51,339 - WARNING - KRW-RVN: 충분한 데이터 없음
+2025-07-22 03:02:52,618 - WARNING - KRW-AXL: 충분한 데이터 없음
+2025-07-22 03:02:55,135 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 03:02:59,956 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 03:03:01,769 - WARNING - KRW-RAY: 충분한 데이터 없음
+2025-07-22 03:03:07,149 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 03:03:08,427 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 03:42:08,434 - INFO - 총 182개 코인 조회 시작
+2025-07-22 03:42:09,382 - WARNING - KRW-BAT: 충분한 데이터 없음
+2025-07-22 03:42:09,411 - WARNING - KRW-HUNT: 충분한 데이터 없음
+2025-07-22 03:42:09,449 - WARNING - KRW-PENGU: 충분한 데이터 없음
+2025-07-22 03:42:10,396 - WARNING - KRW-AERGO: 충분한 데이터 없음
+2025-07-22 03:42:10,432 - WARNING - KRW-USDT: 충분한 데이터 없음
+2025-07-22 03:42:10,462 - WARNING - KRW-BOUNTY: 충분한 데이터 없음
+2025-07-22 03:42:11,408 - WARNING - KRW-ALGO: 충분한 데이터 없음
+2025-07-22 03:42:11,443 - WARNING - KRW-SHIB: 충분한 데이터 없음
+2025-07-22 03:42:11,473 - WARNING - KRW-UNI: 충분한 데이터 없음
+2025-07-22 03:42:12,448 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 03:42:12,476 - WARNING - KRW-SEI: 충분한 데이터 없음
+2025-07-22 03:42:12,696 - WARNING - KRW-JST: 충분한 데이터 없음
+2025-07-22 03:42:13,449 - WARNING - KRW-ALT: 충분한 데이터 없음
+2025-07-22 03:42:13,484 - WARNING - KRW-LAYER: 충분한 데이터 없음
+2025-07-22 03:42:13,698 - WARNING - KRW-POWR: 충분한 데이터 없음
+2025-07-22 03:42:13,733 - WARNING - KRW-ATOM: 충분한 데이터 없음
+2025-07-22 03:42:14,483 - WARNING - KRW-TRUMP: 충분한 데이터 없음
+2025-07-22 03:42:14,513 - WARNING - KRW-G: 충분한 데이터 없음
+2025-07-22 03:42:14,724 - WARNING - KRW-CTC: 충분한 데이터 없음
+2025-07-22 03:42:14,760 - WARNING - KRW-ANIME: 충분한 데이터 없음
+2025-07-22 03:42:15,507 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 03:42:15,540 - WARNING - KRW-NEO: 충분한 데이터 없음
+2025-07-22 03:42:15,750 - WARNING - KRW-IOTA: 충분한 데이터 없음
+2025-07-22 03:42:15,787 - WARNING - KRW-IOST: 충분한 데이터 없음
+2025-07-22 03:42:16,550 - WARNING - KRW-IQ: 충분한 데이터 없음
+2025-07-22 03:42:16,759 - WARNING - KRW-RVN: 충분한 데이터 없음
+2025-07-22 03:42:16,793 - WARNING - KRW-AGLD: 충분한 데이터 없음
+2025-07-22 03:42:17,561 - WARNING - KRW-AWE: 충분한 데이터 없음
+2025-07-22 03:42:17,776 - WARNING - KRW-AXL: 충분한 데이터 없음
+2025-07-22 03:42:17,813 - WARNING - KRW-HP: 충분한 데이터 없음
+2025-07-22 03:42:18,571 - WARNING - KRW-AQT: 충분한 데이터 없음
+2025-07-22 03:42:18,781 - WARNING - KRW-SONIC: 충분한 데이터 없음
+2025-07-22 03:42:18,811 - WARNING - KRW-ARB: 충분한 데이터 없음
+2025-07-22 03:42:18,841 - WARNING - KRW-POL: 충분한 데이터 없음
+2025-07-22 03:42:19,671 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 03:42:19,751 - ERROR - KRW-ATH 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:19,784 - WARNING - KRW-TAIKO: 충분한 데이터 없음
+2025-07-22 03:42:19,816 - WARNING - KRW-AVAX: 충분한 데이터 없음
+2025-07-22 03:42:19,855 - WARNING - KRW-IMX: 충분한 데이터 없음
+2025-07-22 03:42:20,476 - ERROR - KRW-HIVE 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:20,511 - WARNING - KRW-CBK: 충분한 데이터 없음
+2025-07-22 03:42:20,587 - ERROR - KRW-OM 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:20,620 - WARNING - KRW-XLM: 충분한 데이터 없음
+2025-07-22 03:42:20,651 - WARNING - KRW-SAFE: 충분한 데이터 없음
+2025-07-22 03:42:20,865 - WARNING - KRW-POKT: 충분한 데이터 없음
+2025-07-22 03:42:21,492 - ERROR - KRW-FCT2 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:21,523 - WARNING - KRW-MTL: 충분한 데이터 없음
+2025-07-22 03:42:21,601 - ERROR - KRW-VET 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:21,639 - WARNING - KRW-QTUM: 충분한 데이터 없음
+2025-07-22 03:42:21,671 - WARNING - KRW-TT: 충분한 데이터 없음
+2025-07-22 03:42:21,886 - WARNING - KRW-XRP: 충분한 데이터 없음
+2025-07-22 03:42:22,456 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 03:42:22,490 - WARNING - KRW-MANA: 충분한 데이터 없음
+2025-07-22 03:42:22,526 - WARNING - KRW-GRS: 충분한 데이터 없음
+2025-07-22 03:42:22,555 - WARNING - KRW-PYTH: 충분한 데이터 없음
+2025-07-22 03:42:22,630 - ERROR - KRW-UXLINK 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:22,660 - WARNING - KRW-ENS: 충분한 데이터 없음
+2025-07-22 03:42:22,695 - WARNING - KRW-GRT: 충분한 데이터 없음
+2025-07-22 03:42:22,914 - WARNING - KRW-CKB: 충분한 데이터 없음
+2025-07-22 03:42:23,318 - WARNING - KRW-RAY: 충분한 데이터 없음
+2025-07-22 03:42:23,392 - ERROR - KRW-ONDO 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:23,424 - WARNING - KRW-ZRX: 충분한 데이터 없음
+2025-07-22 03:42:23,495 - ERROR - KRW-GMT 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:23,526 - WARNING - KRW-TFUEL: 충분한 데이터 없음
+2025-07-22 03:42:23,563 - WARNING - KRW-MASK: 충분한 데이터 없음
+2025-07-22 03:42:23,630 - ERROR - KRW-COMP 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:23,665 - WARNING - KRW-ZETA: 충분한 데이터 없음
+2025-07-22 03:42:23,710 - WARNING - KRW-TIA: 충분한 데이터 없음
+2025-07-22 03:42:23,928 - WARNING - KRW-ELF: 충분한 데이터 없음
+2025-07-22 03:42:24,548 - ERROR - KRW-1INCH 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:24,577 - WARNING - KRW-MEW: 충분한 데이터 없음
+2025-07-22 03:42:24,651 - ERROR - KRW-ORBS 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:24,683 - WARNING - KRW-RENDER: 충분한 데이터 없음
+2025-07-22 03:42:24,720 - WARNING - KRW-STG: 충분한 데이터 없음
+2025-07-22 03:42:24,937 - WARNING - KRW-BERA: 충분한 데이터 없음
+2025-07-22 03:42:25,563 - ERROR - KRW-STRIKE 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:25,596 - WARNING - KRW-MBL: 충분한 데이터 없음
+2025-07-22 03:42:25,669 - ERROR - KRW-BIGTIME 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:25,700 - WARNING - KRW-SNT: 충분한 데이터 없음
+2025-07-22 03:42:25,733 - WARNING - KRW-SOL: 충분한 데이터 없음
+2025-07-22 03:42:25,945 - WARNING - KRW-META: 충분한 데이터 없음
+2025-07-22 03:42:25,986 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 03:42:26,062 - ERROR - KRW-MLK 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:26,096 - WARNING - KRW-SXP: 충분한 데이터 없음
+2025-07-22 03:42:26,131 - WARNING - KRW-VTHO: 충분한 데이터 없음
+2025-07-22 03:42:26,520 - WARNING - KRW-MNT: 충분한 데이터 없음
+2025-07-22 03:42:26,600 - ERROR - KRW-MOC 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:26,634 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 03:42:26,668 - WARNING - KRW-XEC: 충분한 데이터 없음
+2025-07-22 03:42:26,701 - WARNING - KRW-ZIL: 충분한 데이터 없음
+2025-07-22 03:42:26,733 - WARNING - KRW-GAME2: 충분한 데이터 없음
+2025-07-22 03:42:26,952 - WARNING - KRW-BSV: 충분한 데이터 없음
+2025-07-22 03:42:27,602 - ERROR - KRW-BTT 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:27,674 - ERROR - KRW-ONT 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:27,704 - WARNING - KRW-DEEP: 충분한 데이터 없음
+2025-07-22 03:42:27,742 - WARNING - KRW-STRAX: 충분한 데이터 없음
+2025-07-22 03:42:27,956 - WARNING - KRW-POLYX: 충분한 데이터 없음
+2025-07-22 03:42:27,995 - INFO - 총 182개 코인 조회 시작
+2025-07-22 03:42:28,606 - ERROR - KRW-BORA 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:28,682 - ERROR - KRW-PUNDIX 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:28,718 - WARNING - KRW-BAT: 충분한 데이터 없음
+2025-07-22 03:42:28,750 - WARNING - KRW-HUNT: 충분한 데이터 없음
+2025-07-22 03:42:28,964 - WARNING - KRW-FIL: 충분한 데이터 없음
+2025-07-22 03:42:28,999 - WARNING - KRW-BEAM: 충분한 데이터 없음
+2025-07-22 03:42:29,425 - ERROR - KRW-MOVE 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:29,508 - ERROR - KRW-AERGO 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:29,542 - WARNING - KRW-USDT: 충분한 데이터 없음
+2025-07-22 03:42:29,617 - ERROR - KRW-BOUNTY 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:29,694 - ERROR - KRW-KAITO 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:29,727 - WARNING - KRW-LPT: 충분한 데이터 없음
+2025-07-22 03:42:29,760 - WARNING - KRW-BLAST: 충분한 데이터 없음
+2025-07-22 03:42:29,986 - WARNING - KRW-ANKR: 충분한 데이터 없음
+2025-07-22 03:42:30,016 - WARNING - KRW-ALGO: 충분한 데이터 없음
+2025-07-22 03:42:30,454 - ERROR - KRW-TOKAMAK 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:30,527 - ERROR - KRW-DOGE 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:30,560 - WARNING - KRW-PEPE: 충분한 데이터 없음
+2025-07-22 03:42:30,628 - ERROR - KRW-HBAR 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:30,695 - ERROR - KRW-BCH 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:30,728 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 03:42:30,761 - WARNING - KRW-SEI: 충분한 데이터 없음
+2025-07-22 03:42:30,796 - WARNING - KRW-BONK: 충분한 데이터 없음
+2025-07-22 03:42:31,008 - WARNING - KRW-AAVE: 충분한 데이터 없음
+2025-07-22 03:42:31,041 - WARNING - KRW-JTO: 충분한 데이터 없음
+2025-07-22 03:42:31,445 - WARNING - KRW-ALT: 충분한 데이터 없음
+2025-07-22 03:42:31,476 - WARNING - KRW-LAYER: 충분한 데이터 없음
+2025-07-22 03:42:31,550 - ERROR - KRW-TRX 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:31,582 - WARNING - KRW-POWR: 충분한 데이터 없음
+2025-07-22 03:42:31,652 - ERROR - KRW-ATOM 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:31,722 - ERROR - KRW-ARKM 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:31,758 - WARNING - KRW-CRO: 충분한 데이터 없음
+2025-07-22 03:42:31,796 - WARNING - KRW-NXPC: 충분한 데이터 없음
+2025-07-22 03:42:31,826 - WARNING - KRW-A: 충분한 데이터 없음
+2025-07-22 03:42:32,030 - WARNING - KRW-G: 충분한 데이터 없음
+2025-07-22 03:42:32,061 - WARNING - KRW-CELO: 충분한 데이터 없음
+2025-07-22 03:42:32,489 - ERROR - KRW-APT 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:32,564 - ERROR - KRW-MOCA 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:32,596 - WARNING - KRW-AHT: 충분한 데이터 없음
+2025-07-22 03:42:32,665 - ERROR - KRW-EGLD 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:32,702 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 03:42:32,733 - WARNING - KRW-NEO: 충분한 데이터 없음
+2025-07-22 03:42:32,768 - WARNING - KRW-ETC: 충분한 데이터 없음
+2025-07-22 03:42:32,804 - WARNING - KRW-IOTA: 충분한 데이터 없음
+2025-07-22 03:42:32,841 - WARNING - KRW-IOST: 충분한 데이터 없음
+2025-07-22 03:42:33,053 - WARNING - KRW-COW: 충분한 데이터 없음
+2025-07-22 03:42:33,092 - WARNING - KRW-VIRTUAL: 충분한 데이터 없음
+2025-07-22 03:42:33,677 - WARNING - KRW-RVN: 충분한 데이터 없음
+2025-07-22 03:42:33,753 - ERROR - KRW-AGLD 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:33,787 - WARNING - KRW-ID: 충분한 데이터 없음
+2025-07-22 03:42:33,826 - WARNING - KRW-WAL: 충분한 데이터 없음
+2025-07-22 03:42:33,857 - WARNING - KRW-PENDLE: 충분한 데이터 없음
+2025-07-22 03:42:34,075 - WARNING - KRW-AWE: 충분한 데이터 없음
+2025-07-22 03:42:34,110 - WARNING - KRW-THETA: 충분한 데이터 없음
+2025-07-22 03:42:34,149 - WARNING - KRW-AXL: 충분한 데이터 없음
+2025-07-22 03:42:34,226 - ERROR - KRW-HP 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:34,259 - WARNING - KRW-SAND: 충분한 데이터 없음
+2025-07-22 03:42:34,287 - WARNING - KRW-WCT: 충분한 데이터 없음
+2025-07-22 03:42:34,852 - WARNING - KRW-ME: 충분한 데이터 없음
+2025-07-22 03:42:34,883 - WARNING - KRW-SONIC: 충분한 데이터 없음
+2025-07-22 03:42:35,101 - WARNING - KRW-POL: 충분한 데이터 없음
+2025-07-22 03:42:35,139 - WARNING - KRW-CVC: 충분한 데이터 없음
+2025-07-22 03:42:35,711 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 03:42:35,798 - ERROR - KRW-ATH 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:35,829 - WARNING - KRW-TAIKO: 충분한 데이터 없음
+2025-07-22 03:42:35,859 - WARNING - KRW-AVAX: 충분한 데이터 없음
+2025-07-22 03:42:35,890 - WARNING - KRW-IMX: 충분한 데이터 없음
+2025-07-22 03:42:36,101 - WARNING - KRW-INJ: 충분한 데이터 없음
+2025-07-22 03:42:36,147 - WARNING - KRW-MVL: 충분한 데이터 없음
+2025-07-22 03:42:36,907 - WARNING - KRW-SAFE: 충분한 데이터 없음
+2025-07-22 03:42:37,126 - WARNING - KRW-POKT: 충분한 데이터 없음
+2025-07-22 03:42:37,157 - WARNING - KRW-KNC: 충분한 데이터 없음
+2025-07-22 03:42:37,915 - WARNING - KRW-VET: 충분한 데이터 없음
+2025-07-22 03:42:37,988 - ERROR - KRW-QTUM 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:38,077 - ERROR - KRW-TT 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:38,108 - WARNING - KRW-LINK: 충분한 데이터 없음
+2025-07-22 03:42:38,145 - WARNING - KRW-XRP: 충분한 데이터 없음
+2025-07-22 03:42:38,179 - WARNING - KRW-CHZ: 충분한 데이터 없음
+2025-07-22 03:42:38,584 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 03:42:38,652 - ERROR - KRW-MANA 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:38,691 - WARNING - KRW-GRS: 충분한 데이터 없음
+2025-07-22 03:42:38,724 - WARNING - KRW-PYTH: 충분한 데이터 없음
+2025-07-22 03:42:38,934 - WARNING - KRW-ENS: 충분한 데이터 없음
+2025-07-22 03:42:39,008 - ERROR - KRW-GRT 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:39,088 - ERROR - KRW-XTZ 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:39,118 - WARNING - KRW-CKB: 충분한 데이터 없음
+2025-07-22 03:42:39,152 - WARNING - KRW-KAVA: 충분한 데이터 없음
+2025-07-22 03:42:39,188 - WARNING - KRW-ZRO: 충분한 데이터 없음
+2025-07-22 03:42:39,227 - WARNING - KRW-RAY: 충분한 데이터 없음
+2025-07-22 03:42:39,301 - ERROR - KRW-ONDO 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:39,333 - WARNING - KRW-ZRX: 충분한 데이터 없음
+2025-07-22 03:42:39,363 - WARNING - KRW-GMT: 충분한 데이터 없음
+2025-07-22 03:42:39,578 - WARNING - KRW-MASK: 충분한 데이터 없음
+2025-07-22 03:42:39,964 - WARNING - KRW-TIA: 충분한 데이터 없음
+2025-07-22 03:42:40,040 - ERROR - KRW-ADA 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:40,111 - ERROR - KRW-ELF 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:40,144 - WARNING - KRW-STEEM: 충분한 데이터 없음
+2025-07-22 03:42:40,178 - WARNING - KRW-SOPH: 충분한 데이터 없음
+2025-07-22 03:42:40,208 - WARNING - KRW-MED: 충분한 데이터 없음
+2025-07-22 03:42:40,979 - WARNING - KRW-STG: 충분한 데이터 없음
+2025-07-22 03:42:41,059 - ERROR - KRW-ORCA 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:41,143 - ERROR - KRW-BERA 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:41,171 - WARNING - KRW-SIGN: 충분한 데이터 없음
+2025-07-22 03:42:41,204 - WARNING - KRW-VANA: 충분한 데이터 없음
+2025-07-22 03:42:41,233 - WARNING - KRW-DOT: 충분한 데이터 없음
+2025-07-22 03:42:41,984 - WARNING - KRW-SOL: 충분한 데이터 없음
+2025-07-22 03:42:42,056 - ERROR - KRW-QKC 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:42,090 - WARNING - KRW-META: 충분한 데이터 없음
+2025-07-22 03:42:42,132 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 03:42:42,163 - WARNING - KRW-MLK: 충분한 데이터 없음
+2025-07-22 03:42:42,193 - WARNING - KRW-SXP: 충분한 데이터 없음
+2025-07-22 03:42:42,227 - WARNING - KRW-VTHO: 충분한 데이터 없음
+2025-07-22 03:42:42,259 - WARNING - KRW-MINA: 충분한 데이터 없음
+2025-07-22 03:42:42,869 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 03:42:42,939 - ERROR - KRW-XEC 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:42,971 - WARNING - KRW-ZIL: 충분한 데이터 없음
+2025-07-22 03:42:43,008 - WARNING - KRW-GAME2: 충분한 데이터 없음
+2025-07-22 03:42:43,085 - ERROR - KRW-STX 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:43,118 - WARNING - KRW-BSV: 충분한 데이터 없음
+2025-07-22 03:42:43,186 - ERROR - KRW-SUI 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:42:43,216 - WARNING - KRW-BTC: 충분한 데이터 없음
+2025-07-22 03:42:43,258 - WARNING - KRW-ONG: 충분한 데이터 없음
+2025-07-22 03:42:43,294 - WARNING - KRW-BTT: 충분한 데이터 없음
+2025-07-22 03:42:44,085 - ERROR - KRW-POLYX 처리 중 오류: 'NoneType' object is not subscriptable
+2025-07-22 03:49:38,346 - INFO - 총 182개 코인 조회 시작
+2025-07-22 03:50:48,283 - INFO - 총 182개 코인 조회 시작
+2025-07-22 03:53:25,846 - INFO - 총 182개 코인 조회 시작
+2025-07-22 03:54:14,590 - INFO - 총 182개 코인 조회 시작
+2025-07-22 03:55:41,495 - INFO - 총 182개 코인 조회 시작
+2025-07-22 03:55:45,669 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 03:55:46,682 - WARNING - KRW-ALT: 충분한 데이터 없음
+2025-07-22 03:55:49,051 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 03:55:50,491 - WARNING - KRW-RVN: 충분한 데이터 없음
+2025-07-22 03:55:51,492 - WARNING - KRW-AXL: 충분한 데이터 없음
+2025-07-22 03:55:53,477 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 03:55:57,244 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 03:55:58,660 - WARNING - KRW-RAY: 충분한 데이터 없음
+2025-07-22 03:56:02,881 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 03:56:03,904 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 03:56:05,891 - INFO - 총 182개 코인 조회 시작
+2025-07-22 03:56:09,932 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 03:56:10,960 - WARNING - KRW-ALT: 충분한 데이터 없음
+2025-07-22 03:56:13,343 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 03:56:14,814 - WARNING - KRW-RVN: 충분한 데이터 없음
+2025-07-22 03:56:15,814 - WARNING - KRW-AXL: 충분한 데이터 없음
+2025-07-22 03:56:17,787 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 03:56:21,544 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 03:56:22,962 - WARNING - KRW-RAY: 충분한 데이터 없음
+2025-07-22 03:56:27,170 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 03:56:28,172 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 04:09:31,434 - INFO - 총 182개 코인 조회 시작
+2025-07-22 04:09:35,608 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 04:09:36,638 - WARNING - KRW-ALT: 충분한 데이터 없음
+2025-07-22 04:09:39,097 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 04:09:40,572 - WARNING - KRW-RVN: 충분한 데이터 없음
+2025-07-22 04:09:41,602 - WARNING - KRW-AXL: 충분한 데이터 없음
+2025-07-22 04:09:43,618 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 04:09:47,527 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 04:09:48,954 - WARNING - KRW-RAY: 충분한 데이터 없음
+2025-07-22 04:09:53,146 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 04:09:54,139 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 04:09:56,118 - INFO - 총 182개 코인 조회 시작
+2025-07-22 04:10:00,148 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 04:10:01,170 - WARNING - KRW-ALT: 충분한 데이터 없음
+2025-07-22 04:10:03,589 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 04:10:04,998 - WARNING - KRW-RVN: 충분한 데이터 없음
+2025-07-22 04:10:06,004 - WARNING - KRW-AXL: 충분한 데이터 없음
+2025-07-22 04:10:08,037 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 04:10:11,939 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 04:10:13,424 - WARNING - KRW-RAY: 충분한 데이터 없음
+2025-07-22 04:10:17,762 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 04:10:18,808 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 04:16:15,612 - INFO - 총 182개 코인 조회 시작
+2025-07-22 04:16:19,780 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 04:16:20,828 - WARNING - KRW-ALT: 충분한 데이터 없음
+2025-07-22 04:16:23,304 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 04:16:24,755 - WARNING - KRW-RVN: 충분한 데이터 없음
+2025-07-22 04:16:25,790 - WARNING - KRW-AXL: 충분한 데이터 없음
+2025-07-22 04:16:27,804 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 04:16:31,713 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 04:16:33,163 - WARNING - KRW-RAY: 충분한 데이터 없음
+2025-07-22 04:16:37,504 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 04:16:38,541 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 04:16:40,564 - INFO - 총 182개 코인 조회 시작
+2025-07-22 04:16:44,727 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 04:16:45,771 - WARNING - KRW-ALT: 충분한 데이터 없음
+2025-07-22 04:16:48,218 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 04:16:49,674 - WARNING - KRW-RVN: 충분한 데이터 없음
+2025-07-22 04:16:50,713 - WARNING - KRW-AXL: 충분한 데이터 없음
+2025-07-22 04:16:52,725 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 04:16:56,482 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 04:16:57,897 - WARNING - KRW-RAY: 충분한 데이터 없음
+2025-07-22 04:17:02,116 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 04:17:03,106 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 04:24:59,223 - INFO - 총 182개 코인 조회 시작
+2025-07-22 04:25:03,327 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 04:25:04,327 - WARNING - KRW-ALT: 충분한 데이터 없음
+2025-07-22 04:25:06,756 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 04:25:08,179 - WARNING - KRW-RVN: 충분한 데이터 없음
+2025-07-22 04:25:09,181 - WARNING - KRW-AXL: 충분한 데이터 없음
+2025-07-22 04:25:11,185 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 04:25:14,982 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 04:25:16,397 - WARNING - KRW-RAY: 충분한 데이터 없음
+2025-07-22 04:25:20,597 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 04:25:21,599 - WARNING - KRW-MOODENG: 충분한 데이터 없음
+2025-07-22 04:25:23,589 - INFO - 총 182개 코인 조회 시작
+2025-07-22 04:25:27,651 - WARNING - KRW-NEWT: 충분한 데이터 없음
+2025-07-22 04:25:28,666 - WARNING - KRW-ALT: 충분한 데이터 없음
+2025-07-22 04:25:31,082 - WARNING - KRW-ERA: 충분한 데이터 없음
+2025-07-22 04:25:32,528 - WARNING - KRW-RVN: 충분한 데이터 없음
+2025-07-22 04:25:33,520 - WARNING - KRW-AXL: 충분한 데이터 없음
+2025-07-22 04:25:35,500 - WARNING - KRW-HYPER: 충분한 데이터 없음
+2025-07-22 04:25:39,294 - WARNING - KRW-ENA: 충분한 데이터 없음
+2025-07-22 04:25:40,725 - WARNING - KRW-RAY: 충분한 데이터 없음
+2025-07-22 04:25:44,922 - WARNING - KRW-SAHARA: 충분한 데이터 없음
+2025-07-22 04:25:45,917 - WARNING - KRW-MOODENG: 충분한 데이터 없음
