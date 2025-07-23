@@ -15,10 +15,9 @@ API_CALL_DELAY = 0.1 # API 호출 간 딜레이 (초), 너무 빠르면 API 제�
 start_date = datetime.strptime(START_DATE_STR, "%Y-%m-%d %H:%M:%S")
 end_date = datetime.strptime(END_DATE_STR, "%Y-%m-%d %H:%M:%S")
 
-# --- 3. 모든 KRW 마켓 티커 가져오기 ---
+# --- 3. KRW 마켓에서 거래대금 상위 20위 티커 가져오기 ---
 # all_krw_tickers = pyupbit.get_tickers(fiat="KRW")
 # print(f"총 {len(all_krw_tickers)}개의 KRW 마켓 코인을 대상으로 백테스트를 진행합니다.")
-
 tickers = ["KRW-XRP", "KRW-DOGE", "KRW-XTZ", "KRW-ETH", "KRW-CKB", "KRW-BTC", "KRW-ETC", "KRW-SOL", "KRW-OM", "KRW-BSV", "KRW-ENA", "KRW-KNC", "KRW-XLM", "KRW-ARK", "KRW-IOST", "KRW-MEW", "KRW-PENGU", "KRW-ENS", "KRW-ADA", "KRW-AERGO"]
 
 # --- 4. 백테스트 준비 ---
@@ -83,13 +82,14 @@ while current_backtest_date <= end_date:
             prev_prev_close = prev_prev_day_data['close']
             prev_prev_ma = prev_prev_day_data['ma']
             current_close = current_day_data['close']
+            current_ma = current_day_data['ma']
 
             # 이동평균이 NaN인 경우 (데이터 부족) 스킵
             if pd.isna(prev_ma) or pd.isna(prev_prev_ma):
                 continue
 
             # --- 상향 돌파 조건 ---
-            is_golden_cross = (prev_close >= prev_ma) and (prev_prev_close < prev_prev_ma)
+            is_golden_cross = (prev_close >= prev_ma) and (prev_prev_close < prev_prev_ma) and (current_close >= current_ma)
 
             # --- 하향 돌파 조건 ---
             is_death_cross = (prev_close <= prev_ma) and (prev_prev_close > prev_prev_ma)
@@ -102,7 +102,7 @@ while current_backtest_date <= end_date:
                     trade_amount_btc = BUY_AMOUNT_PER_TRADE / current_close
                     coin_holdings[ticker] += trade_amount_btc
                     total_cash -= BUY_AMOUNT_PER_TRADE
-                    action = f"매수 (종가: {current_close:,.0f}, {BUY_AMOUNT_PER_TRADE:,}원 어치)"
+                    action = f"매수 (종가: {current_close:,.0f}, {BUY_AMOUNT_PER_TRADE:,}원 어치, 수량: {trade_amount_btc:,.8f})"
                     print(f"    {ticker}: {action} (남은 현금: {total_cash:,.0f}원)")
                 else:
                     action = "매수 실패 (총 현금 부족)"
@@ -148,15 +148,22 @@ print(f"수익률: {profit_loss_percentage:.2f}%")
 
 # 각 코인별 최종 보유량 및 가치 출력
 print("\n--- 코인별 최종 보유 현황 ---")
+total_value = 0
 for ticker, amount in coin_holdings.items():
     if amount > 0:
         final_price = current_prices_for_evaluation.get(ticker, 0) # 마지막 날의 평가 가격 사용
+        total_value += amount * final_price
         print(f"  {ticker}: {amount:.4f}개 (현재가치: {amount * final_price:,.0f}원)")
+print(f"  현재 코인 총 가치: {total_value:,.0f}원)")
 
 # (선택 사항) 총 자산 변화 시각화
 try:
     import matplotlib.pyplot as plt
+    import matplotlib.font_manager as fm
     
+    plt.rcParams['font.family'] = 'Malgun Gothic'  # Windows
+    plt.rcParams['axes.unicode_minus'] = False     # 마이너스 깨짐 방지
+
     dates = list(daily_total_assets.keys())
     assets = list(daily_total_assets.values())
 
