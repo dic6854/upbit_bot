@@ -2,8 +2,8 @@
 
 import pyupbit
 
-access_key = "tYrgW4vSBodQjNT31RWdzeVkR1o9MEpqqMwksowp"
-secret_key = "ySwagxxcQEojjExUMpuuo8SyWDEiRs522z0hDx7H"
+access_key = "tYrgW4vSBodQdzeVkR1o9MEpqqMwksowp"
+secret_key = "ySwagxxcQEojjESyWDEiRs522z0hDx7H"
 
 upbit = pyupbit.Upbit(access=access_key, secret=secret_key)
 

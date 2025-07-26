@@ -4,10 +4,10 @@ from datetime import datetime, timedelta
 import time # API 호출 딜레이를 위한 라이브러리
 
 # --- 1. 설정 변수 ---
-START_DATE_STR = "2025-01-01 09:00:00"
+START_DATE_STR = "2025-07-01 09:00:00"
 END_DATE_STR = "2025-07-20 09:00:00"
-INITIAL_CASH = 5000000  # 초기 현금 (500만원), 여러 코인에 분산 투자 가정
-BUY_AMOUNT_PER_TRADE = 100000  # 매수 금액 (10만원) - 각 코인별
+INITIAL_CASH = 10000000  # 초기 현금 (1000만원), 여러 코인에 분산 투자 가정
+BUY_AMOUNT_PER_TRADE = 1000000  # 매수 금액 (10만원) - 각 코인별
 MA_PERIOD = 30  # 이동평균 기간 (30일 단순 이동평균)
 API_CALL_DELAY = 0.1 # API 호출 간 딜레이 (초), 너무 빠르면 API 제한 걸림
 
@@ -16,10 +16,9 @@ start_date = datetime.strptime(START_DATE_STR, "%Y-%m-%d %H:%M:%S")
 end_date = datetime.strptime(END_DATE_STR, "%Y-%m-%d %H:%M:%S")
 
 # --- 3. KRW 마켓에서 거래대금 상위 20위 티커 가져오기 ---
-tickers = pyupbit.get_tickers(fiat="KRW")
-print(f"총 {len(tickers)}개의 KRW 마켓 코인을 대상으로 백테스트를 진행합니다.")
-# tickers = ["KRW-XRP", "KRW-DOGE", "KRW-XTZ", "KRW-ETH", "KRW-CKB", "KRW-BTC", "KRW-ETC", "KRW-SOL", "KRW-OM", "KRW-BSV", "KRW-ENA", "KRW-KNC", "KRW-XLM", "KRW-ARK", "KRW-IOST", "KRW-MEW", "KRW-PENGU", "KRW-ENS", "KRW-ADA", "KRW-AERGO"]
-# tickers = ["KRW-XRP", "KRW-DOGE", "KRW-BTC", "KRW-ETC"]
+# all_krw_tickers = pyupbit.get_tickers(fiat="KRW")
+# print(f"총 {len(all_krw_tickers)}개의 KRW 마켓 코인을 대상으로 백테스트를 진행합니다.")
+tickers = ["KRW-XRP", "KRW-DOGE", "KRW-XTZ", "KRW-ETH", "KRW-CKB", "KRW-BTC", "KRW-ETC", "KRW-SOL", "KRW-OM", "KRW-BSV", "KRW-ENA", "KRW-KNC", "KRW-XLM", "KRW-ARK", "KRW-IOST", "KRW-MEW", "KRW-PENGU", "KRW-ENS", "KRW-ADA", "KRW-AERGO"]
 
 # --- 4. 백테스트 준비 ---
 total_cash = INITIAL_CASH
@@ -59,8 +58,8 @@ while current_backtest_date <= end_date:
     # 각 코인별로 데이터 가져오고 매매 로직 적용
     for ticker in tickers:
         try:
-            # 이동평균 계산을 위해 충분한 과거 데이터와 현재 날짜까지의 데이터를 가져옵니다.
-            # to=current_backtest_date + timedelta(days=1)로 하면 오늘 데이터까지 가져옴
+            # 지정된 날짜의 캔들 데이터까지 가져오기 위해서는 날짜지정을 "YYYY-MM-DD 09:00:00"으로 지정하여야 한다.
+            # 5이평선 값을 하나 구하기 위해서는 5일의 데이터가 필요하다. 따라서 7일의 데이터를 가지고는 3개의 이평선 값을 구할 수 있다.
             ohlcv = pyupbit.get_ohlcv(ticker, interval="day", to=current_backtest_date, count=(MA_PERIOD + 2))
             
             if ohlcv is None or ohlcv.empty:
@@ -75,25 +74,28 @@ while current_backtest_date <= end_date:
             # 현재 날짜 데이터 확인
             # 마지막 데이터가 오늘 날짜 데이터, 그 전이 어제, 그 전전이 그저께 데이터
             current_day_data = ohlcv.iloc[-1]
-            prev_day_data = ohlcv.iloc[-2]
-            prev_prev_day_data = ohlcv.iloc[-3]
+            prev1_day_data = ohlcv.iloc[-2]
+            prev2_day_data = ohlcv.iloc[-3]
 
-            prev_close = prev_day_data['close']
-            prev_ma = prev_day_data['ma']
-            prev_prev_close = prev_prev_day_data['close']
-            prev_prev_ma = prev_prev_day_data['ma']
+            prev1_close = prev1_day_data['close']
+            prev1_open = prev1_day_data['open']
+            prev1_ma = prev1_day_data['ma']
+            
+            prev2_close = prev2_day_data['close']
+            prev2_ma = prev2_day_data['ma']
+
             current_close = current_day_data['close']
             current_ma = current_day_data['ma']
 
             # 이동평균이 NaN인 경우 (데이터 부족) 스킵
-            if pd.isna(prev_ma) or pd.isna(prev_prev_ma):
+            if pd.isna(prev1_ma) or pd.isna(prev2_ma):
                 continue
 
             # --- 상향 돌파 조건 ---
-            is_golden_cross = (prev_close >= prev_ma) and (prev_prev_close < prev_prev_ma) and (current_close >= current_ma)
+            is_golden_cross = (prev2_close < prev2_ma) and (prev1_close > prev1_ma)
 
             # --- 하향 돌파 조건 ---
-            is_death_cross = (prev_close <= prev_ma) and (prev_prev_close > prev_prev_ma)
+            is_death_cross = (prev2_close > prev2_ma) and (prev1_close < prev1_ma)
 
             action = "유지"
             

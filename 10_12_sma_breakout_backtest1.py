@@ -4,9 +4,9 @@ from datetime import datetime, timedelta
 import time # API 호출 딜레이를 위한 라이브러리
 
 # --- 1. 설정 변수 ---
-START_DATE_STR = "2025-01-01 09:00:00"
+START_DATE_STR = "2025-07-01 09:00:00"
 END_DATE_STR = "2025-07-20 09:00:00"
-INITIAL_CASH = 5000000  # 초기 현금 (500만원), 여러 코인에 분산 투자 가정
+INITIAL_CASH = 10000000  # 초기 현금 (1000만원), 여러 코인에 분산 투자 가정
 BUY_AMOUNT_PER_TRADE = 100000  # 매수 금액 (10만원) - 각 코인별
 MA_PERIOD = 30  # 이동평균 기간 (30일 단순 이동평균)
 API_CALL_DELAY = 0.1 # API 호출 간 딜레이 (초), 너무 빠르면 API 제한 걸림
@@ -16,10 +16,9 @@ start_date = datetime.strptime(START_DATE_STR, "%Y-%m-%d %H:%M:%S")
 end_date = datetime.strptime(END_DATE_STR, "%Y-%m-%d %H:%M:%S")
 
 # --- 3. KRW 마켓에서 거래대금 상위 20위 티커 가져오기 ---
-tickers = pyupbit.get_tickers(fiat="KRW")
-print(f"총 {len(tickers)}개의 KRW 마켓 코인을 대상으로 백테스트를 진행합니다.")
-# tickers = ["KRW-XRP", "KRW-DOGE", "KRW-XTZ", "KRW-ETH", "KRW-CKB", "KRW-BTC", "KRW-ETC", "KRW-SOL", "KRW-OM", "KRW-BSV", "KRW-ENA", "KRW-KNC", "KRW-XLM", "KRW-ARK", "KRW-IOST", "KRW-MEW", "KRW-PENGU", "KRW-ENS", "KRW-ADA", "KRW-AERGO"]
-# tickers = ["KRW-XRP", "KRW-DOGE", "KRW-BTC", "KRW-ETC"]
+# all_krw_tickers = pyupbit.get_tickers(fiat="KRW")
+# print(f"총 {len(all_krw_tickers)}개의 KRW 마켓 코인을 대상으로 백테스트를 진행합니다.")
+tickers = ["KRW-XRP", "KRW-DOGE", "KRW-XTZ", "KRW-ETH", "KRW-CKB", "KRW-BTC", "KRW-ETC", "KRW-SOL", "KRW-OM", "KRW-BSV", "KRW-ENA", "KRW-KNC", "KRW-XLM", "KRW-ARK", "KRW-IOST", "KRW-MEW", "KRW-PENGU", "KRW-ENS", "KRW-ADA", "KRW-AERGO"]
 
 # --- 4. 백테스트 준비 ---
 total_cash = INITIAL_CASH
@@ -61,7 +60,7 @@ while current_backtest_date <= end_date:
         try:
             # 이동평균 계산을 위해 충분한 과거 데이터와 현재 날짜까지의 데이터를 가져옵니다.
             # to=current_backtest_date + timedelta(days=1)로 하면 오늘 데이터까지 가져옴
-            ohlcv = pyupbit.get_ohlcv(ticker, interval="day", to=current_backtest_date, count=(MA_PERIOD + 2))
+            ohlcv = pyupbit.get_ohlcv(ticker, interval="day", to=current_backtest_date, count=(MA_PERIOD + 3))
             
             if ohlcv is None or ohlcv.empty:
                 continue
@@ -75,45 +74,49 @@ while current_backtest_date <= end_date:
             # 현재 날짜 데이터 확인
             # 마지막 데이터가 오늘 날짜 데이터, 그 전이 어제, 그 전전이 그저께 데이터
             current_day_data = ohlcv.iloc[-1]
-            prev_day_data = ohlcv.iloc[-2]
-            prev_prev_day_data = ohlcv.iloc[-3]
+            prev1_day_data = ohlcv.iloc[-2]
+            prev2_day_data = ohlcv.iloc[-3]
+            prev3_day_data = ohlcv.iloc[-4]
 
-            prev_close = prev_day_data['close']
-            prev_ma = prev_day_data['ma']
-            prev_prev_close = prev_prev_day_data['close']
-            prev_prev_ma = prev_prev_day_data['ma']
-            current_close = current_day_data['close']
-            current_ma = current_day_data['ma']
+            trade_price = (current_day_data['high'] - current_day_data['low']) / 2    # 당일날의 매수가/매도가를 임의로 정함 (그날의 최고가와 최저가의 중간 값)
+
+            prev1_close = prev1_day_data['close']
+            prev1_ma = prev1_day_data['ma']
+            is_up = ((prev1_day_data['close'] - prev1_day_data['open']) > 0) and (prev1_close >= prev1_ma)      # 전일(1일전)이 양봉이고 전일의 종가가 단순이평선 위에 있는 경우
+
+            prev2_close = prev2_day_data['close']
+            prev2_ma = prev2_day_data['ma']
+
+            prev3_close = prev3_day_data['close']
+            prev3_ma = prev3_day_data['ma']
+
+            is_golden_cross = (prev3_close < prev3_ma) and (prev2_close >= prev2_ma)    # 3일전 종가가 3일전 이평선 아래에 있다가 2일전 종가가 2일전 이평선 위로 상향돌파한 경우
+
+            is_dead_cross = (prev2_close >= prev2_ma) and (prev1_close < prev1_ma)      # 2일전 종가가 2일전 이평선 위에 있다가 1일전(전일) 종가가 1일전(전일) 이평선 아래로 하향돌파한 경우
 
             # 이동평균이 NaN인 경우 (데이터 부족) 스킵
-            if pd.isna(prev_ma) or pd.isna(prev_prev_ma):
+            if pd.isna(prev1_ma) or pd.isna(prev2_ma) or pd.isna(prev3_ma):
                 continue
-
-            # --- 상향 돌파 조건 ---
-            is_golden_cross = (prev_close >= prev_ma) and (prev_prev_close < prev_prev_ma) and (current_close >= current_ma)
-
-            # --- 하향 돌파 조건 ---
-            is_death_cross = (prev_close <= prev_ma) and (prev_prev_close > prev_prev_ma)
 
             action = "유지"
             
             # 매매 로직 적용
-            if is_golden_cross:
+            if is_golden_cross and is_up:
                 if total_cash >= BUY_AMOUNT_PER_TRADE: # 총 현금 잔고 확인 (하나의 코인을 살만큼의 잔고가 있는지 확인)
-                    trade_amount_btc = BUY_AMOUNT_PER_TRADE / current_close
+                    trade_amount_btc = BUY_AMOUNT_PER_TRADE / trade_price
                     coin_holdings[ticker] += trade_amount_btc
                     total_cash -= BUY_AMOUNT_PER_TRADE
-                    action = f"매수 (종가: {current_close:,.0f}, {BUY_AMOUNT_PER_TRADE:,}원 어치, 수량: {trade_amount_btc:,.8f})"
+                    action = f"매수 (매수가: {trade_price:,.0f}, {BUY_AMOUNT_PER_TRADE:,}원 어치, 수량: {trade_amount_btc:,.8f})"
                     print(f"    {ticker}: {action} (남은 현금: {total_cash:,.0f}원)")
                 else:
                     action = "매수 실패 (총 현금 부족)"
                     # print(f"    {ticker}: {action}")
 
-            elif is_death_cross:
+            elif is_dead_cross:
                 if coin_holdings[ticker] > 0: # 해당 코인 보유량 확인
-                    sell_value = coin_holdings[ticker] * current_close
+                    sell_value = coin_holdings[ticker] * trade_price
                     total_cash += sell_value
-                    print(f"    {ticker}: 전량 매도 (종가: {current_close:,.0f}, {coin_holdings[ticker]:.4f} {ticker.split('-')[1]}, {sell_value:,.0f}원)")
+                    print(f"    {ticker}: 전량 매도 (매도가: {trade_price:,.0f}, {coin_holdings[ticker]:.4f} {ticker.split('-')[1]}, {sell_value:,.0f}원)")
                     coin_holdings[ticker] = 0
                 else:
                     action = "매도 실패 (보유 코인 없음)"
@@ -122,7 +125,7 @@ while current_backtest_date <= end_date:
             time.sleep(API_CALL_DELAY) # API 호출 간 딜레이
         
         except Exception as e:
-            # print(f"    {ticker} 데이터 처리 중 오류 발생: {e}")
+            print(f"    {ticker} 데이터 처리 중 오류 발생: {e}")
             pass # 오류 발생 시 해당 코인 스킵
 
     # 일별 총 자산 업데이트 (매매 후 현재가로 평가)
