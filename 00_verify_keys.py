@@ -1,11 +1,14 @@
 # 업비트에 등록된 키 (환경변수로 등록하기 전) 확인 및 잔고 조회
 
 import pyupbit
+from get_keys import get_keys
 
-access_key = "tYrgW4vSBodQdzeVkR1o9MEpqqMwksowp"
-secret_key = "ySwagxxcQEojjESyWDEiRs522z0hDx7H"
+myAccess_key, mySecret_key = get_keys()
 
-upbit = pyupbit.Upbit(access=access_key, secret=secret_key)
+print(f"myAccess_key = {myAccess_key}")
+print(f"mySecret_key = {mySecret_key}")
+
+upbit = pyupbit.Upbit(access=myAccess_key, secret=mySecret_key)
 
 balances = upbit.get_balances()
 
