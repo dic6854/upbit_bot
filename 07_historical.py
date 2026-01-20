@@ -3,91 +3,60 @@ import pandas as pd
 from datetime import datetime, timedelta
 import time
 
+def __convert_to_utc_str(my_date):
+    if my_date is None:
+        my_date_dt = datetime.now()
+    elif " " in my_date or "T" in my_date:
+        my_date_dt = datetime.strptime(my_date, "%Y-%m-%d %H:%M:%S")
+    else:
+        my_date = my_date + " 09:00:00"
+        my_date_dt = datetime.strptime(my_date, "%Y-%m-%d %H:%M:%S")
+
+    my_date_utc_dt = my_date_dt - timedelta(hours=9)
+    my_date_utc_str = my_date_utc_dt.strftime("%Y-%m-%d %H:%M:%S")
+
+    return my_date_utc_str
+
+
 def get_historical_data(ticker, interval="minute5", to_date=None, from_date=None):
     all_data = pd.DataFrame()
 
-    if to_date is None:
-        to_date = datetime.now() - timedelta(hours=9) + timedelta(seconds=1)
-        to_date = to_date.strftime("%Y-%m-%d %H:%M:%S")
-    elif " " in to_date or "T" in to_date:
-        date_obj = datetime.strptime(to_date, "%Y-%m-%d %H:%M:%S")
-        date_utc = date_obj - timedelta(hours=9) + timedelta(seconds=1)
-        to_date = date_utc.strftime("%Y-%m-%d %H:%M:%S")
-    else:
-        date_obj = to_date + " 09:00:00"
-        date_obj = datetime.strptime(date_obj, "%Y-%m-%d %H:%M:%S")
-        date_utc = date_obj - timedelta(hours=9) + timedelta(seconds=1)
-        to_date = date_utc.strftime("%Y-%m-%d %H:%M:%S")
+    to_date_utc_str = __convert_to_utc_str(to_date)
 
-    print(to_date)
+    while True:
+        df = pyupbit.get_ohlcv(ticker, interval=interval, to=to_date_utc_str)
 
+        if df is None or df.empty:
+            break
+
+        first_index_kst_dt = df.index[0]
+        first_index_kst_str = first_index_kst_dt.strftime("%Y-%m-%d %H:%M:%S")
+        first_index_utc_dt = first_index_kst_dt - timedelta(hours=9)
+        first_index_utc_str = first_index_utc_dt.strftime("%Y-%m-%d %H:%M:%S")
+
+        print(f'first_index = {first_index_kst_str}, from_date = {from_date}')
+
+        if first_index_kst_str < from_date:
+            all_data = pd.concat([df, all_data])
+            break
+
+        all_data = pd.concat([df, all_data])
+        to_date_utc_str = first_index_utc_str
+        # print(first_index_kst_str)
+        time.sleep(0.2)  # API rate limit 고려
+
+    all_data.sort_index(ascending=False, inplace=True)
+    all_data.index.name = 'date'        # 1. 인덱스 이름 설정   
+    all_data.reset_index(inplace=True)  # 2. 인덱스를 컬럼으로 이동 (inplace=True로 원본 변경)
+    all_data['date'] = all_data['date'].astype('string')  # 3. date 컬럼을 문자열로 변환
+    all_data = all_data[all_data['date'] >= from_date].reset_index(drop=True)
+    return all_data
+
+    
 if __name__ == "__main__":
     ticker = "KRW-BTC"
 
-    get_historical_data(ticker, to_date="2026-01-19 20:59:37")
+    df = get_historical_data(ticker, to_date="2025-01-01 09:00:00", from_date="2024-01-01 09:00:00")
 
-    '''
-    date_obj = datetime.strptime(to_date, "%Y-%m-%d %H:%M:%S")
-    print(date_obj)
-
-    date_utc = date_obj - timedelta(hours=9) + timedelta(seconds=1)
-    date_ytc_str = date_utc.strftime("%Y-%m-%d %H:%M:%S")
-
-
-    while True:
-        data = pyupbit.get_ohlcv(ticker, interval=interval, to=to)
-        if data is None or data.empty:
-            break
-        all_data = pd.concat([data, all_data])
-        to = (data.index[0] - timedelta(minutes=1)).strftime("%Y-%m-%d %H:%M:%S")
-        time.sleep(0.2)  # API rate limit 고려
-
-    return all_data
-    '''
-
-'''
-date_str = "2026-01-19"
-date_obj = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
-print(date_obj)
-
-date_utc = date_obj - timedelta(hours=9) + timedelta(seconds=1)
-date_ytc_str = date_utc.strftime("%Y-%m-%d %H:%M:%S")
-
-date_obj_end = date_obj - timedelta(minutes=1000)
-print(date_obj_end)
-
-df = pyupbit.get_ohlcv(ticker="KRW-BTC", interval="minute5", to=date_ytc_str)
-print(df)
-
-f_index = df.index[0]
-f_index_utc = f_index - timedelta(hours=9) - timedelta(seconds=1)
-f_index_utc_str = f_index_utc.strftime("%Y-%m-%d %H:%M:%S")
-print(f_index_utc_str)
-
-df = pyupbit.get_ohlcv(ticker="KRW-BTC", interval="minute5", to=f_index_utc_str)
-print(df)
-
-def get_historical_data(ticker, interval="minute5", to=None, count=999):
-    all_data = pd.DataFrame()
-    to = None
-
-    while True:
-        data = pyupbit.get_ohlcv(ticker, interval=interval, to=to, count=count)
-        if data is None or data.empty:
-            break
-        all_data = pd.concat([data, all_data])
-        to = (data.index[0] - timedelta(minutes=1)).strftime("%Y-%m-%d %H:%M:%S")
-        time.sleep(0.2)  # API rate limit 고려
-
-    return all_data
-
-ticker = "KRW-BTC"
-
-# 최근 3년치 정도 가져오려면 이렇게
-df = pyupbit.get_ohlcv(ticker, interval="day", count=999) # 최대한 많이
-
-# 또는 특정 날짜부터 그 이전 데이터를 최대한 많이 가져오기
-# df = pyupbit.get_ohlcv(ticker, "day", to="2024-01-01", count=999)
-
-print(df)
-'''
+    df.to_excel("코인_5분봉_2024년.xlsx", index=False, sheet_name="비트코인")
+    print("저장완료!")
