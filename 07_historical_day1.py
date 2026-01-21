@@ -18,11 +18,12 @@ def __convert_to_utc_str(my_date):
     return my_date_utc_str
 
 
-def get_historical_data(ticker, interval="minute5", to_date=None, from_date=None):
+def get_historical_data(ticker, interval, to_date=None, from_date=None):
     all_data = pd.DataFrame()
 
     to_date_utc_str = __convert_to_utc_str(to_date)
 
+    i = 1
     while True:
         df = pyupbit.get_ohlcv(ticker, interval=interval, to=to_date_utc_str)
 
@@ -34,7 +35,8 @@ def get_historical_data(ticker, interval="minute5", to_date=None, from_date=None
         first_index_utc_dt = first_index_kst_dt - timedelta(hours=9)
         first_index_utc_str = first_index_utc_dt.strftime("%Y-%m-%d %H:%M:%S")
 
-        print(f'first_index = {first_index_kst_str}, from_date = {from_date}')
+        print(f'[{i}] first_index = {first_index_kst_str}, from_date = {from_date}')
+        i += 1
 
         if first_index_kst_str < from_date:
             all_data = pd.concat([df, all_data])
@@ -42,7 +44,6 @@ def get_historical_data(ticker, interval="minute5", to_date=None, from_date=None
 
         all_data = pd.concat([df, all_data])
         to_date_utc_str = first_index_utc_str
-        # print(first_index_kst_str)
         time.sleep(0.2)  # API rate limit 고려
 
     all_data.sort_index(ascending=False, inplace=True)
@@ -58,5 +59,5 @@ if __name__ == "__main__":
 
     df = get_historical_data(ticker, to_date="2025-01-01 09:00:00", from_date="2024-01-01 09:00:00")
 
-    df.to_excel("코인_5분봉_2024년.xlsx", index=False, sheet_name="비트코인")
-    print("저장완료!")
+    # df.to_excel("코인_5분봉_2024년.xlsx", index=False, sheet_name="비트코인")
+    # print("저장완료!")
