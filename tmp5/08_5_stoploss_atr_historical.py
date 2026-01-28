@@ -3,7 +3,7 @@ import numpy as np
 
 period=14
 
-file_name = "코인_5분봉_test.xlsx"
+file_name = "hdata\코인_5분봉_org.xlsx"
 df = pd.read_excel(file_name)
 df = df.sort_values(by='date', ascending=True).reset_index(drop=True)
 print("읽어들임 완료!!")
@@ -18,7 +18,7 @@ df['ATR'] = df['TR'].ewm(alpha=1/period, adjust=False).mean()
 df['STOP'] = df['close'] - df['ATR'] * 2
 
 print(df)
-df.to_excel("코인_5분봉_test1.xlsx", index=False, sheet_name="비트코인")
+df.to_excel("hdata\코인_5분봉_ATR.xlsx", index=False, sheet_name="비트코인")
 print("저장완료!")
 
 # 1. 차트로 간단히 확인 (matplotlib)

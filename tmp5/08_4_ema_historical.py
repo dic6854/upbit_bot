@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
 # 1-1. 엑셀파일 읽어들임
-file_name = "코인_5분봉_org.xlsx"
+file_name = "hdata\코인_5분봉_지표org.xlsx"
 df = pd.read_excel(file_name)
 df = df.sort_values(by='date', ascending=True).reset_index(drop=True)
 print("읽어들임 완료!!")
@@ -35,7 +35,7 @@ df['StochRSI_K'] = df['StochRSI'].rolling(3).mean() * 100  # 0-100 스케일
 df['StochRSI_D'] = df['StochRSI_K'].rolling(3).mean()
 
 # 1-5. NaN 제거 (지표 계산으로 인한)
-df.dropna(inplace=True)
+# df.dropna(inplace=True)
 
-df.to_excel("코인_5분봉_ema_rsi_stochrsi.xlsx", index=False, sheet_name="비트코인")
+df.to_excel("hdata\코인_5분봉_test1.xlsx", index=False, sheet_name="비트코인")
 print("저장완료!")

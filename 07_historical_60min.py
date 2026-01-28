@@ -57,7 +57,7 @@ def get_historical_data(ticker, interval, to_date=None, from_date=None):
 if __name__ == "__main__":
     ticker = "KRW-BTC"
 
-    df = get_historical_data(ticker, interval="minute5", to_date="2026-01-28 09:00:00", from_date="2024-01-01 09:00:00")
+    df = get_historical_data(ticker, interval="minute60", to_date="2026-01-28 09:00:00", from_date="2024-01-01 09:00:00")
 
-    df.to_excel("코인_5분봉_org.xlsx", index=False, sheet_name="비트코인")
+    df.to_excel("코인_60분봉_org.xlsx", index=False, sheet_name="비트코인")
     print("저장완료!")
