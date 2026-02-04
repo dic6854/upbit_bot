@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 def run_simulation(initial_total=10000000):
     # 파일 읽기
-    file_path = 'Coin_60min.xlsx'
+    file_path = '60min.xlsx'
     sheets = {
         'BTC': 'BTC',
         'XRP': 'XRP',
@@ -17,19 +17,19 @@ def run_simulation(initial_total=10000000):
         df['date'] = pd.to_datetime(df['date'])
         df = df.set_index('date')
         df_dict[coin] = df
-    
+
     # 설정값
-    cash_ratio = 0.9
-    crypto_ratio = 0.1
-    each_crypto_ratio = 0.025
-    fee_rate = 0.0005  # 업비트 수수료 0.05%
-    sell_threshold = 1.5  # 50% 상승
-    sell_weight_limit = 0.15  # 비중 15% 초과
-    buy_threshold = 0.67  # 33% 하락
+    cash_ratio = 0.9            # 총자산 대비 현금 보유 비율
+    crypto_ratio = 0.1          # 총자산 대비 코인들에 투자할 총비율
+    each_crypto_ratio = 0.025   # 총자산 대비 각 코인에 투자할 비율
+    fee_rate = 0.0005           # 업비트 수수료 0.05%
+    sell_threshold = 1.5        # 코인에 투자한 총비용 대비 50% 상승
+    sell_weight_limit = 0.15    # 총자산 대비 코인평가자산의 비중이 15% 초과
+    buy_threshold = 0.67        # 33% 하락
     
     # 상태 변수 초기화
-    current_cash = initial_total * cash_ratio
-    last_rebalance_crypto_value = initial_total * crypto_ratio
+    current_cash = initial_total * cash_ratio                       # 현재의 현금자산 초기화
+    last_rebalance_crypto_value = initial_total * crypto_ratio      # 현재의 코인자산 초기화
     
     # 코인 목록
     coins = list(df_dict.keys())
@@ -101,17 +101,19 @@ def run_simulation(initial_total=10000000):
     # 결과 출력
     print("시뮬레이션 결과 요약:")
     print(results.tail())  # 마지막 몇 행 출력
-    print(f"초기 자본: {initial_total:.0f}원")
-    print(f"최종 자산: {results['total_assets'].iloc[-1]:.0f}원")
+    print(f"초기 자본: {initial_total:,.0f}원")
+    print(f"최종 자산: {results['total_assets'].iloc[-1]:,.0f}원")
     print(f"총 리밸런싱 횟수: {results['rebalanced'].sum()}")
     
     # 그래프 출력 (자산 추이)
     plt.figure(figsize=(12, 6))
-    plt.plot(results['time'], results['total_assets'], label='Total Assets')
-    plt.plot(results['time'], results['crypto_value'], label='Crypto Value')
-    plt.title('Asset Value Over Time')
-    plt.xlabel('Time')
-    plt.ylabel('Value (KRW)')
+    plt.rc('font', family='Malgun Gothic')      # 윈도우: '맑은 고딕'
+    plt.rcParams['axes.unicode_minus'] = False  # 마이너스 기호 깨짐 방지 (중요!)
+    plt.plot(results['time'], results['total_assets'], label='총자산')
+    plt.plot(results['time'], results['crypto_value'], label='코인자산')
+    plt.title('자산의 변동 현황')
+    plt.xlabel('시간')
+    plt.ylabel('(단위:천만원)')
     plt.legend()
     plt.grid(True)
     plt.show()

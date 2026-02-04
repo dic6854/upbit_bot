@@ -56,17 +56,20 @@ def get_historical_data(ticker, interval, to_date=None, from_date=None):
 
     
 if __name__ == "__main__":
-    file_path1 = "60min.xlsx"
+    # file_path1 = "60min.xlsx"
+    file_path1 = "day.xlsx"
 
     coins = ['BTC', 'XRP', 'ETH', 'ADA']
 
     for coin in coins:
         ticker = "KRW-" + coin
-        df = get_historical_data(ticker, interval="minute60", to_date="2026-02-03 19:00:00", from_date="2020-01-01 00:00:00")
+        # df = get_historical_data(ticker, interval="minute60", to_date="2026-02-03 19:00:00", from_date="2020-01-01 00:00:00")
+        df = get_historical_data(ticker, interval="day", to_date="2026-02-03", from_date="2020-12-20")
 
         df['date'] = pd.to_datetime(df['date'])
         df = df.set_index('date')
-        df_filled = df.asfreq('h').ffill()
+        # df_filled = df.asfreq('h').ffill()
+        df_filled = df.asfreq('D').ffill()
 
         df_filled.index.name = 'date'
         df_filled = df_filled.reset_index()
