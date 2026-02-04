@@ -1,3 +1,4 @@
+import os
 import pyupbit
 import pandas as pd
 from datetime import datetime, timedelta
@@ -55,9 +56,30 @@ def get_historical_data(ticker, interval, to_date=None, from_date=None):
 
     
 if __name__ == "__main__":
-    ticker = "KRW-BTC"
+    file_path1 = "60min.xlsx"
 
-    df = get_historical_data(ticker, interval="minute60", to_date="2026-01-28 09:00:00", from_date="2024-01-01 09:00:00")
+    coins = ['BTC', 'XRP', 'ETH', 'ADA']
 
-    df.to_excel("코인_60분봉_org.xlsx", index=False, sheet_name="비트코인")
-    print("저장완료!")
+    for coin in coins:
+        ticker = "KRW-" + coin
+        df = get_historical_data(ticker, interval="minute60", to_date="2026-02-03 19:00:00", from_date="2020-01-01 00:00:00")
+
+        df['date'] = pd.to_datetime(df['date'])
+        df = df.set_index('date')
+        df_filled = df.asfreq('h').ffill()
+
+        df_filled.index.name = 'date'
+        df_filled = df_filled.reset_index()
+        # df_filled.rename(columns={'index': 'date'}, inplace=True)
+        df_filled['date'] = df_filled['date'].astype('string')
+
+        # 1. 파일이 존재하는지 확인
+        if not os.path.exists(file_path1):
+            # 파일이 없으면 'w' 모드(새로 만들기)로 저장
+            df_filled.to_excel(file_path1, index=False, sheet_name=coin)
+            print(f"{file_path1} 파일을 새로 생성했습니다.")
+        else:
+            # 파일이 있으면 'a' 모드(추가하기)로 실행
+            with pd.ExcelWriter(file_path1, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
+                df_filled.to_excel(writer, index=False, sheet_name=coin)
+            print(f"{file_path1} 파일에 {coin} 시트를 업데이트했습니다.")
