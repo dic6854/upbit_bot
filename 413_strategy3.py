@@ -3,201 +3,143 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 
-# ──────────────── 한글 폰트 설정 (가장 중요한 부분) ────────────────
-# 환경에 따라 아래 3개 중 하나만 선택해서 사용하세요
-# 1. 윈도우 → Malgun Gothic (대부분 기본 설치됨)
-# 2. 맥 → AppleGothic
-# 3. Colab / 리눅스 → NanumGothic (아래 설치 코드 필요 시 사용)
+def __get_tick_size(price):     # 호가단위(Tick Size) 반환
+    if price >= 2000000: return 1000
+    elif price >= 1000000: return 500
+    elif price >= 500000: return 100
+    elif price >= 100000: return 50
+    elif price >= 10000: return 10
+    elif price >= 1000: return 1
+    elif price >= 100: return 1     # 100원대 코인 (1원 단위)
+    elif price >= 10: return 0.1    # 10원대 코인 (0.1원 단위)
+    else: return 0.01               # 10원 미만 코인 (0.01원 단위)
 
-plt.rc('font', family='Malgun Gothic')          # ← 윈도우 추천
-# plt.rc('font', family='NanumGothic')          # Colab/리눅스 추천
-# plt.rc('font', family='AppleGothic')          # 맥 추천
+# 상수 설정
+TOTAL_ASSETS = 10000000.0       # 1000만원
+INVESTMENT_RATIO = 0.20         # 전체 자산의 20%만 투자
+TARGET_VOLATILITY = 2.0         # 목표 변동성 (타켓변동성) 2%로 설정
+NUM_COINS = 4                   # 투자할 코인 개수 4개 : BTC, XRP, ETH, ADA
+INVEST_PER_COIN = TOTAL_ASSETS * INVESTMENT_RATIO / NUM_COINS  # 각 코인당 500,000원
+FEE_RATE = 0.001                # (수수료=0.05%=0.0005) + (슬리피지율=0.05%=0.0005)=0.1%=0.001
 
-plt.rcParams['axes.unicode_minus'] = False      # 마이너스 기호 깨짐 방지
-# ────────────────────────────────────────────────────────────────
+# 엑셀 파일에서 데이터 로드
+file_path = 'day.xlsx'
+coins = ['BTC', 'XRP', 'ETH', 'ADA']
 
-def run_backtest(file_path):
-    # ===================== 설정값 =====================
-    initial_capital = 10000000
-    target_vol = 2.0
-    fee = 0.001
-    coins = ['BTC', 'XRP', 'ETH', 'ADA']
-    n_coins = len(coins)
-    
-    # ===================== 데이터 로드 및 전처리 =====================
-    all_data = {}
-    for coin in coins:
-        df = pd.read_excel(file_path, sheet_name=coin)
-        df['date'] = pd.to_datetime(df['date'])
-        df.set_index('date', inplace=True)
-        df.sort_index(inplace=True)
-        
-        df['ma5']  = df['close'].rolling(5).mean()
-        df['ma10'] = df['close'].rolling(10).mean()
-        df['ma20'] = df['close'].rolling(20).mean()
-        
-        df['day_vol'] = ((df['high'].shift(1) - df['low'].shift(1)) / df['open'].shift(1)) * 100
-        df['avg_vol_5d'] = df['day_vol'].rolling(5).mean()
-        
-        all_data[coin] = df
+data = {}
+for coin in coins:
+    df = pd.read_excel(file_path, sheet_name=coin)
+    df['date'] = pd.to_datetime(df['date'])
+    df.set_index('date', inplace=True)
+    df.sort_index(inplace=True)
+    df['MA5'] = df['close'].rolling(window=5).mean()
+    df['MA10'] = df['close'].rolling(window=10).mean()
+    df['MA20'] = df['close'].rolling(window=20).mean()
 
-    # 공통 날짜 범위
-    common_dates = all_data[coins[0]].index
-    for coin in coins:
-        common_dates = common_dates.intersection(all_data[coin].index)
-    
-    # ===================== 초기화 =====================
-    cash = initial_capital
-    positions = {coin: 0.0 for coin in coins}
-    portfolio = pd.DataFrame(
-        index=common_dates,
-        columns=['total_value', 'cash', 'holdings_value'],
-        data=0.0
-    )
-    trade_logs = []
-    
-    # ===================== 백테스트 메인 루프 =====================
-    for date in common_dates:
-        prices = {coin: all_data[coin].loc[date, 'close'] for coin in coins}
-        
-        holdings_value = sum(positions[coin] * prices[coin] for coin in coins)
-        total_value_pre = cash + holdings_value
-        
-        portfolio.loc[date, 'total_value']    = total_value_pre
-        portfolio.loc[date, 'cash']           = cash
-        portfolio.loc[date, 'holdings_value'] = holdings_value
-        
-        target_amounts = {}
-        
-        for coin in coins:
-            df = all_data[coin]
-            curr_price = df.loc[date, 'close']
-            ma5  = df.loc[date, 'ma5']
-            ma10 = df.loc[date, 'ma10']
-            ma20 = df.loc[date, 'ma20']
-            vol_5d = df.loc[date, 'avg_vol_5d']
-            
-            if (pd.notna(ma5) and pd.notna(ma10) and pd.notna(ma20) and
-                curr_price > ma5 and curr_price > ma10 and curr_price > ma20):
+    # (1일변동성)=[[(전일고가)-(전일저가)]/(당일시가)]*100
+    df['day_volatility'] = ((df['high'].shift(1) - df['low'].shift(1)) / df['open']) * 100
+    # (5일평균변동성)=[(1일변동성)]
+    df['VMA5'] = df['day_volatility'].rolling(window=5).mean()
+
+    df = df.dropna()
+    df = df.loc['2021-01-01':'2025-12-31']
+    data[coin] = df
+
+# 모든 코인이 공통으로 존재하는 날짜만 사용
+common_dates = set(data['BTC'].index)
+for coin in coins[1:]:
+    common_dates.intersection_update(data[coin].index)
+common_dates = sorted(list(common_dates))
+
+# 포트폴리오 초기화 - float 타입으로
+portfolio = pd.DataFrame(
+    index=common_dates,
+    columns=['total_value', 'cash', 'holdings_value'],      # 총자산, 현금, 코인투자대기금
+    data=0.0
+)
+
+# initial_cash = TOTAL_ASSETS * (1 - INVESTMENT_RATIO)        # 현금현황 초기화
+initial_cash = TOTAL_ASSETS                     # 현금현황 초기화
+portfolio['cash'] = initial_cash                # 현금
+portfolio['total_value'] = initial_cash         # 총자금
+
+# 포지션 및 투자금 추적
+positions = {coin: 0.0 for coin in coins}       # {'BTC': 0.0, 'XRP': 0.0, 'ETH': 0.0, 'ADA': 0.0}
+invested_amount = {coin: 0.0 for coin in coins} # {'BTC': 0.0, 'XRP': 0.0, 'ETH': 0.0, 'ADA': 0.0}
+
+trade_logs = []
+
+# 백테스팅 시뮬레이션
+for i, date in enumerate(common_dates):
+    if i > 0:   # 첫요소는 넘어가고, 두번째 요소부터 체크
+        prev_date = common_dates[i-1]   # 이전 요소의 날짜 데이터 저장
+        portfolio.loc[date, 'cash'] = portfolio.loc[prev_date, 'cash']      # 이전요소의 현금상황을 현요소의 현금상황에 넣음
+
+    current_holdings_value = 0.0    # 투자자금을 0으로 초기화
+
+    for coin in coins:         # 코인을 BTC -> XRP -> ETH -> ADA 순으로 순환함
+        row = data[coin].loc[date]  # 해당 날짜의 행(Row) 데이터값을 row 변수(dict형)에 저장
+        close = row['close']        # row에서 'close'(종가) key의 key값을 close라는 변수에 저장
+        ma5 = row['MA5']            # row에서 'MA5'(5일이평선값) key의 key값을 ma5라는 변수에 저장
+        ma10 = row['MA10']          # row에서 'MA10'(10일이평선값) key의 key값을 ma10라는 변수에 저장
+        ma20 = row['MA20']          # row에서 'MA20'(20일이평선값) key의 key값을 ma20라는 변수에 저장
+        vma5 = row['VMA5']          # row에서 'VMA5'(5일평균변동성) key의 key값을 VMA5라는 변수에 저장
+
+        if (close > ma5 and close > ma10 and close > ma20): # 현재가가 5일, 10일, 20일 이평선 모두의 위에 있을때 => 매수 조건 충족
+            remaining_alloc = INVEST_PER_COIN - invested_amount[coin]   # 해당 코인의 투자 비중 설정    
+            buy_amount = min(remaining_alloc, portfolio.loc[date, 'cash'])
+            weight = (TARGET_VOLATILITY / vma5) * (1 / NUM_COINS)     # 해당 코인의 투자 비중 설정
+            target_amount = buy_amount * weight
+
+            if target_amount > 0:
+                fee = target_amount * FEE_RATE
+                actual_buy = target_amount - fee
+                quantity = actual_buy / close
+                safe_qty = float("{:.8f}".format(quantity))     # 수량: 소수점 8째 자리까지만 남기고 버림
                 
-                if pd.notna(vol_5d) and vol_5d > 0:
-                    weight = (target_vol / vol_5d) / n_coins
-                    target_amounts[coin] = total_value_pre * weight
-                else:
-                    target_amounts[coin] = 0
-            else:
-                target_amounts[coin] = 0
-        
-        # 목표 금액 총합이 현재 자산 초과 시 정규화
-        total_target = sum(target_amounts.values())
-        if total_target > total_value_pre and total_target > 0:
-            scale = total_value_pre / total_target
-            for coin in target_amounts:
-                target_amounts[coin] *= scale
-        
-        # 리밸런싱 & 거래 로그
-        for coin in coins:
-            current_val = positions[coin] * prices[coin]
-            target_val  = target_amounts.get(coin, 0.0)
-            diff        = target_val - current_val
-            
-            if abs(diff) > 1:  # 최소 거래 단위 이하 무시
-                close = prices[coin]
-                quantity = diff / close
-                trade_fee = abs(diff) * fee
-                
-                pl = diff if diff < 0 else 0.0  # 매도 시 근사 손익
+                portfolio.loc[date, 'cash'] -= actual_buy
+                positions[coin] += safe_qty
+                invested_amount[coin] += actual_buy
                 
                 trade_logs.append({
                     'date': date,
                     'coin': coin,
-                    'action': 'buy' if diff > 0 else 'sell',
+                    'action': 'buy',
                     'price': close,
-                    'quantity': abs(quantity),
-                    'amount': abs(diff),
-                    'fee': trade_fee,
-                    'profit_loss': pl
+                    'quantity': safe_qty,
+                    'profit_loss': 0.0
                 })
-                
-                cash -= (diff + trade_fee)
-                positions[coin] = target_val / close if close > 0 else 0
+        # 현재가가 5일, 10일, 20일 이평선 중 어느 하나 아래에 있고, 해당 코인을 보유하고 있을때 => 매도 조건 충족
+        elif ((close < ma5 or close < ma10 or close < ma20) and (positions[coin] > 0)): 
+            sell_value = positions[coin] * close        # 매도할 금액
+            fee = sell_value * FEE_RATE                 # 수수료
+            cash_in = sell_value - fee                  # 현금 증가
+            portfolio.loc[date, 'cash'] += cash_in      # 현금 증가
 
-    # ===================== 결과 정리 =====================
-    result_df = portfolio.copy()
-    result_df['daily_ret'] = result_df['total_value'].pct_change()
-    result_df['cum_ret'] = result_df['total_value'] / initial_capital - 1
-    
-    result_df['peak'] = result_df['total_value'].cummax()
-    result_df['drawdown'] = result_df['total_value'] / result_df['peak'] - 1
-    mdd = result_df['drawdown'].min()
-    
-    final_value = result_df['total_value'].iloc[-1]
-    final_return_pct = (final_value / initial_capital - 1) * 100
-    
-    print("\n===== 백테스트 최종 결과 =====")
-    print(f"초기 자산       : {initial_capital:,.0f} 원")
-    print(f"최종 자산       : {final_value:,.0f} 원")
-    print(f"총 수익률       : {final_return_pct:,.2f}%")
-    print(f"최대 낙폭 (MDD) : {mdd*100:,.2f}%")
-    print(f"총 거래 횟수     : {len(trade_logs)} 회")
-    
-    # 거래 로그 요약
-    if trade_logs:
-        trades_df = pd.DataFrame(trade_logs)
-        trades_df['date'] = pd.to_datetime(trades_df['date'])
-        trades_df.set_index('date', inplace=True)
+            avg_buy_price = invested_amount[coin] / positions[coin]   # 평균 매수 단가
+            pl = (close - avg_buy_price) * positions[coin] - fee      # 손익
+
+            trade_logs.append({
+                'date': date,
+                'coin': coin,
+                'action': 'sell',
+                'price': close,
+                'quantity': positions[coin],
+                'profit_loss': pl
+            })
+
+            positions[coin] = 0.0   # 포지션 초기화
+            invested_amount[coin] = 0.0   # 투자금 초기화
         
-        print("\n코인별 거래 금액 합계:")
-        print(trades_df.groupby('coin')['amount'].sum().round(0).astype(int))
-        print("\n매도 시 근사 손익 합계:", round(trades_df[trades_df['action']=='sell']['profit_loss'].sum(), 0))
-    
-    # ===================== 월별 통계 및 그래프 =====================
-    result_df['month'] = result_df.index.to_period('M')
-    
-    # 월말 기준 총자산
-    monthly_end = result_df.groupby('month')['total_value'].last()
-    monthly_end.index = monthly_end.index.to_timestamp()
-    
-    # 월별 누적 수익률 (%)
-    monthly_growth = (monthly_end / initial_capital - 1) * 100
-    
-    # 그래프 1: 월말 총자산 추이 (선 그래프)
-    plt.figure(figsize=(12, 6))
-    plt.plot(monthly_end.index, monthly_end / 1_000_000,
-             marker='o', linewidth=2, color='#1f77b4', label='월말 총자산')
-    plt.axhline(y=initial_capital / 1_000_000, color='gray', linestyle='--',
-                label=f'초기 자본 ({initial_capital/1_000_000:.1f}백만 원)')
-    
-    plt.title('월별 말일 기준 총자산 추이', fontsize=14, pad=12)
-    plt.xlabel('날짜')
-    plt.ylabel('총자산 (백만 원)')
-    plt.grid(True, alpha=0.3)
-    plt.legend()
-    plt.tight_layout()
-    plt.show()
-    
-    # 그래프 2: 월별 누적 수익률 (막대 그래프)
-    plt.figure(figsize=(12, 6))
-    colors = ['#2ca02c' if x >= 0 else '#d62728' for x in monthly_growth]
-    bars = plt.bar(monthly_end.index, monthly_growth, color=colors, width=20)
-    
-    for bar, value in zip(bars, monthly_growth):
-        height = bar.get_height()
-        plt.text(bar.get_x() + bar.get_width()/2, height,
-                 f'{value:.1f}%',
-                 ha='center', va='bottom' if height >= 0 else 'top',
-                 fontsize=9)
-    
-    plt.axhline(y=0, color='gray', linewidth=1)
-    plt.title('월별 누적 수익률 (월말 기준)', fontsize=14, pad=12)
-    plt.xlabel('날짜')
-    plt.ylabel('누적 수익률 (%)')
-    plt.grid(True, axis='y', alpha=0.3)
-    plt.tight_layout()
-    plt.show()
-    
-    return result_df, pd.DataFrame(trade_logs) if trade_logs else None, portfolio
+        current_holdings_value += positions[coin] * close
 
-
-# 사용 예시
-result, trades, port = run_backtest('day.xlsx')
+    portfolio.loc[date, 'holdings_value'] = current_holdings_value
+    portfolio.loc[date, 'total_value'] = portfolio.loc[date, 'cash'] + current_holdings_value
+            
+# 결과 출력
+trade_df = pd.DataFrame(trade_logs)
+trade_df.set_index('date', inplace=True)
+print(trade_df)
+trade_df.to_excel('trade.xlsx')
+print(portfolio)
+portfolio.to_excel('portfolio.xlsx')
